@@ -3,7 +3,13 @@ from solution.Solution import Solution
 from outils.Particule import Particule
 
 class Essaim(Solution):
-    def __init__(self, probleme, taille: int, inertie: float, maxConfiance: float):
+    def __init__(
+        self,
+        probleme,
+        taille: int,
+        inertie: float,
+        maxConfiance: float
+    ):
         self.fonction = probleme.fonction;
         self.estDansMemeGroupe = probleme.estDansMemeGroupe;
         self.particules: list[Particule] = [
@@ -46,14 +52,14 @@ class Essaim(Solution):
         for particule in self.particules:
             particule.seDeplacer();
             if (self.valeur(particule) > self.valeurPos(particule.preferee)):
-                particule.majPreferee;
+                particule.majPreferee();
 
     def meilleurGroupe(self, particule: Particule) -> Particule:
-        res = None;
+        res = particule;
         for autre in self.particules:
             if (not self.estDansMemeGroupe(particule, autre)):
                 continue;
-            if (res == None or self.valeur(autre) < self.valeur((res))):
+            if (self.valeur(autre) < self.valeur(res)):
                 res = autre;
         return res;
 

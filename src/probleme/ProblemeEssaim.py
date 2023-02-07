@@ -25,7 +25,12 @@ class ProblemeEssaim(Probleme):
         self.maxConfiance = maxConfiance;
 
     def candidat(self) -> Essaim:
-        return Essaim(self, self.tailleEssaim, self.inertie, self.maxConfiance);
+        return Essaim(
+            self,
+            self.tailleEssaim,
+            self.inertie,
+            self.maxConfiance
+        );
 
     def voisin(self, candidat: Essaim) -> Essaim:
         candidat.etape();
@@ -36,6 +41,8 @@ class Topologie:
         return True;
     def tousDifferents(particule1: Particule, particule2: Particule) -> bool:
         return False;
+    def etoile(particule1: Particule, particule2: Particule) -> bool:
+        return particule1.id == 0 or particule2.id == 0;
     def _nMemeGroupe(n: int, particule1: Particule, particule2: Particule) -> bool:
         return particule1.id // n == particule2.id // n;
     def _nGroupes(n: int, particule1: Particule, particule2: Particule) -> bool:
@@ -76,8 +83,8 @@ def rosenbrock(position: list[float]):
         res += 100 * m1 * m1 + m2 * m2;
     return res;
 
-rosenbrock.borneInf = -5;
-rosenbrock.borneSup = 10;
+rosenbrock.borneInf = -2.048;
+rosenbrock.borneSup = 2.048;
 
 # Probleme Griewank
 def griewank(position: list[float]):

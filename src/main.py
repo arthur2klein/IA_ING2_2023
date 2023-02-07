@@ -11,9 +11,13 @@ from methodeResolution.methodeTSP.MethodeCheminAleatoire import mehodeCheminAlea
 from methodeResolution.methodeTSP.MethodeCheminHillClimbing import MethodeCheminHillClimbing
 from methodeResolution.MethodeRecuit import MethodeRecuit
 from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, griewank, rosenbrock, schwefel, sphere
+from utilisationPySwarms import resolutionAvecPySwarms
 
 
 def __main__():
+    resolutionAvecPySwarms();
+    
+def testComplet():
     nIterations = 10;
 
     print("TSP:");
@@ -106,5 +110,6 @@ def __main__():
     );
     methode = MethodePCO(probleme, 1000);
     print(methode.tester(nIterations));
+    print("\n----------\n");
     
 __main__();

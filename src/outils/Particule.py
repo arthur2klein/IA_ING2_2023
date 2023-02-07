@@ -15,7 +15,7 @@ class Particule:
         self.inertie = inertie;
         self.maxConfiance = maxConfiance;
         self.position = position;
-        self.preferee = position;
+        self.preferee = position[:];
         self.vitesse = [0. for i in self.position];
         self.borneInf = borneInf;
         self.borneSup = borneSup;
@@ -29,10 +29,18 @@ class Particule:
             confiancePreferee * (self.preferee[i] - self.position[i])
             for i in range(len(self.vitesse))
         ];
-        self.verifierBornes();
     
-    def verifierBornes(self):
-        ratio = 1.;
+    def replacerPositionDansEspacePeriodique(self):
+        largeurEspace = self.borneSup - self.borneInf;
+        for i in range(len(self.position)):
+            composante = self.position[i];
+            while composante > self.borneSup:
+                composante -= largeurEspace;
+            while composante < self.borneInf:
+                composante += largeurEspace;
+            self.position[i] = composante;
+        
+    def limiterAuxBornes(self):
         for i in range(len(self.vitesse)):
             ##################"
             # On est en position pi avec une vitesse v1
@@ -57,6 +65,7 @@ class Particule:
     def seDeplacer(self):
         self.position = [self.position[i] + self.vitesse[i]
                          for i in range(len(self.position))];
+        self.replacerPositionDansEspacePeriodique();
 
     def majPreferee(self):
         self.preferee = self.position[:];
