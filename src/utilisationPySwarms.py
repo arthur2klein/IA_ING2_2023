@@ -32,7 +32,7 @@ def resolutionAvecPySwarms():
         0.7,
         1.47
     );
-    methode = MethodePCO(probleme, 1_000_000);
+    methode = MethodePCO(probleme, 10000);
     solution = methode.resoudre();
     best_cost, best_pos = solution.evaluer(), solution.meilleurPos();
     print("best_cost: {}\nbest_pos: {}".format(best_cost, best_pos));

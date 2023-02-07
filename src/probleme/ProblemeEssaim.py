@@ -26,7 +26,11 @@ class ProblemeEssaim(Probleme):
 
     def candidat(self) -> Essaim:
         return Essaim(
-            self,
+            self.fonction,
+            self.estDansMemeGroupe,
+            self.borneInf,
+            self.borneSup,
+            self.nDimensions,
             self.tailleEssaim,
             self.inertie,
             self.maxConfiance

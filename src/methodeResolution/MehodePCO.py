@@ -9,8 +9,10 @@ class MethodePCO(Methode):
         self.nEtapes = nEtapes;
 
     def resoudre(self) -> Essaim:
+        optimum = self.probleme.candidat();
         res = self.probleme.candidat();
         for i in range(self.nEtapes):
             res = self.probleme.voisin(res);
-            print(res.evaluer());
-        return res;
+            if (res.evaluer() < optimum.evaluer()):
+                optimum = Essaim.fromEssaim(res);
+        return optimum;

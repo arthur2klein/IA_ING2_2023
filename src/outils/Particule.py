@@ -20,6 +20,16 @@ class Particule:
         self.borneInf = borneInf;
         self.borneSup = borneSup;
 
+    def fromParticule(particule):
+        return Particule(
+            particule.id,
+            particule.inertie,
+            particule.maxConfiance,
+            particule.position[:],
+            particule.borneInf,
+            particule.borneSup
+        );
+
     def majVitesse(self, cible):
         confiancePreferee = random.random() * self.maxConfiance;
         confianceCible = random.random() * self.maxConfiance;
@@ -77,3 +87,9 @@ class Particule:
             if x < self.borneInf:
                 return False;
         return True;
+
+def norme(liste: list[float]) -> float:
+    res = 0.;
+    for x in liste:
+        res += x * x;
+    return res / len(liste);

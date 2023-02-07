@@ -5,25 +5,43 @@ from outils.Particule import Particule
 class Essaim(Solution):
     def __init__(
         self,
-        probleme,
+        fonction,
+        estDansMemeGroupe,
+        borneInf: float,
+        borneSup: float,
+        nDimensions: int,
         taille: int,
         inertie: float,
         maxConfiance: float
     ):
-        self.fonction = probleme.fonction;
-        self.estDansMemeGroupe = probleme.estDansMemeGroupe;
+        self.fonction = fonction;
+        self.estDansMemeGroupe = estDansMemeGroupe;
         self.particules: list[Particule] = [
             Particule(
                 i,
                 inertie,
                 maxConfiance,
-                [random.random() * (probleme.borneSup - probleme.borneInf) + probleme.borneInf
-                for i in range(probleme.nDimensions)],
-                probleme.borneInf,
-                probleme.borneSup
+                [random.random() * (borneSup - borneInf) + borneInf
+                for i in range(nDimensions)],
+                borneInf,
+                borneSup
             )
             for i in range(taille)
         ];
+
+    def fromEssaim(essaim):
+        res = Essaim(
+            essaim.fonction,
+            essaim.estDansMemeGroupe,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        );
+        res.particules = [Particule.fromParticule(x) for x in essaim.particules];
+        return res;
     
     def meilleurPos(self) -> list[float]:
         res = None;
