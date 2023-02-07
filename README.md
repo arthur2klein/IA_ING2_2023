@@ -1,7 +1,7 @@
 # Td Ia
 
 ## Lancement du programme
-La commande de lancement du programme utilise pipenv et est localisé dans task.json.
+La commande de lancement du programme utilise pipenv et est localisée dans .vscode/tasks.json.
 
 ## Projets associés
 - [Notes de cours](https://gitlab.etude.cy-tech.fr/kleinarthu/semestre4)
