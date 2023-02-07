@@ -16,7 +16,7 @@ class MethodeRecuit(Methode):
     ):
         self.probleme = probleme;
         self.refroidissement = refroidissement;
-        self.tempInitiale = tempInitiale
+        self.tempInitiale = tempInitiale;
         self.tempMin = tempMin;
         self.iterationsParTemp = iterationsParTemp;
 

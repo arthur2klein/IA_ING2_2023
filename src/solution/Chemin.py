@@ -1,5 +1,3 @@
-import math;
-
 from solution.Solution import Solution;
 from outils.Point import Point;
 
