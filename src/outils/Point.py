@@ -1,5 +1,5 @@
-import math;
-from typing import TypeVar;
+import math
+
 
 class Point:
     def __init__(self, nom: str, x: float, y: float):

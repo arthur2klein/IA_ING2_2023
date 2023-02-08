@@ -1,5 +1,5 @@
-from solution.Solution import Solution
 from outils.Statistiques import Statistiques
+from solution.Solution import Solution
 
 
 class Methode:

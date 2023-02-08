@@ -1,4 +1,5 @@
-from solution.Solution import Solution;
+from solution.Solution import Solution
+
 
 class Probleme:
     def candidat(self) -> Solution:

@@ -1,9 +1,8 @@
+import random
 from methodeResolution.Methode import Methode
 from probleme.ProblemeTSP import ProblemeTSP
-from solution.Chemin import Chemin;
-from outils.Point import Point;
+from solution.Chemin import Chemin
 
-import random;
 
 class mehodeCheminAleatoire(Methode):
     def __init__(self, problemeTSP: ProblemeTSP):

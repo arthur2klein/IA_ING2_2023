@@ -1,6 +1,7 @@
 import random
-from solution.Solution import Solution
 from outils.Particule import Particule
+from solution.Solution import Solution
+
 
 class Essaim(Solution):
     def __init__(
@@ -12,7 +13,7 @@ class Essaim(Solution):
         nDimensions: int,
         taille: int,
         inertie: float,
-        maxConfiance: float
+        maxConfiance: float,
     ):
         self.fonction = fonction;
         self.estDansMemeGroupe = estDansMemeGroupe;
@@ -69,17 +70,24 @@ class Essaim(Solution):
             particule.majVitesse(self.meilleurGroupe(particule));
         for particule in self.particules:
             particule.seDeplacer();
-            if (self.valeur(particule) > self.valeurPos(particule.preferee)):
+            if (self.valeur(particule) < self.valeurPos(particule.preferee)):
                 particule.majPreferee();
 
-    def meilleurGroupe(self, particule: Particule) -> Particule:
-        res = particule;
+    def meilleurGroupe(self, particule: Particule) -> list[float]:
+        res = particule.preferee;
         for autre in self.particules:
             if (not self.estDansMemeGroupe(particule, autre)):
                 continue;
-            if (self.valeur(autre) < self.valeur(res)):
-                res = autre;
+            if (self.valeurPos(autre.preferee) < self.valeurPos(res)):
+                res = autre.preferee[:];
         return res;
 
     def __str__(self) -> str:
-        return "Essaim: meilleur position: {}".format(self.meilleurPos());
+        res = "Essaim:";
+        for particule in self.particules:
+            res += "\n\t{} : evaluation = {:0.2E}"\
+                .format(
+                    particule.__str__(),
+                    self.valeur(particule)
+                );
+        return res;

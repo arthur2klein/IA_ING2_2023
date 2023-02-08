@@ -1,6 +1,7 @@
 from lectureFichier.lecteurFichier import lire
-from outils.Point import Point;
-from probleme.ProblemeTSP import ProblemeTSP;
+from outils.Point import Point
+from probleme.ProblemeTSP import ProblemeTSP
+
 
 def lireTSP(path: str) -> ProblemeTSP:
     res = [];

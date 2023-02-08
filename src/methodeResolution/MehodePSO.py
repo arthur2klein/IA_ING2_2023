@@ -3,7 +3,7 @@ from probleme.ProblemeEssaim import ProblemeEssaim
 from solution.Essaim import Essaim
 
 
-class MethodePCO(Methode):
+class MethodePSO(Methode):
     def __init__(self, probleme: ProblemeEssaim, nEtapes: int):
         self.probleme = probleme;
         self.nEtapes = nEtapes;

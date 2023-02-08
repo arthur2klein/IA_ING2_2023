@@ -1,5 +1,6 @@
-from solution.Solution import Solution;
-from outils.Point import Point;
+from outils.Point import Point
+from solution.Solution import Solution
+
 
 class Chemin(Solution):
     def __init__(self, chemin: list[Point]):

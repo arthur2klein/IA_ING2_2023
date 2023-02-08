@@ -3,6 +3,7 @@ from outils.Point import Point
 from probleme.Probleme import Probleme
 from solution.Chemin import Chemin
 
+
 class ProblemeTSP(Probleme):
     def __init__(self, lPoints):
         self.lPoints: list[Point] = lPoints;

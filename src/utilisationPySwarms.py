@@ -1,7 +1,6 @@
-import numpy
 import pyswarms as ps
 from pyswarms.utils.functions import single_obj as fx
-from methodeResolution.MehodePCO import MethodePCO
+from methodeResolution.MehodePSO import MethodePSO
 
 from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, rosenbrock
 
@@ -32,7 +31,7 @@ def resolutionAvecPySwarms():
         0.7,
         1.47
     );
-    methode = MethodePCO(probleme, 10000);
+    methode = MethodePSO(probleme, 1000);
     solution = methode.resoudre();
     best_cost, best_pos = solution.evaluer(), solution.meilleurPos();
-    print("best_cost: {}\nbest_pos: {}".format(best_cost, best_pos));
+    print("best_cost: {:0.5f}\nbest_pos: {}".format(best_cost, ["{:0.5f}".format(x) for x in best_pos]));

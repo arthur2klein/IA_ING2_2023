@@ -3,6 +3,7 @@ from outils.Particule import Particule
 from probleme.Probleme import Probleme
 from solution.Essaim import Essaim
 
+
 class ProblemeEssaim(Probleme):
     def __init__(
         self,

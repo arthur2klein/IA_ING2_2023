@@ -1,10 +1,10 @@
+import math
+import random
 from methodeResolution.Methode import Methode
+from outils.Point import Point
 from probleme.ProblemeTSP import ProblemeTSP
-from solution.Chemin import Chemin;
-from outils.Point import Point;
+from solution.Chemin import Chemin
 
-import random;
-import math;
 
 class MethodeCheminHillClimbing(Methode):
     def __init__(self, probleme: ProblemeTSP):

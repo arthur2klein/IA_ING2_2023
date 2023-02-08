@@ -1,6 +1,7 @@
 import random
-from solution.Solution import Solution
 from outils.Objet import Objet
+from solution.Solution import Solution
+
 
 class Sac(Solution):
     def __init__(self, capacite: int, contenu: list[Objet]):

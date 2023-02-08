@@ -1,6 +1,7 @@
 from lectureFichier.lecteurFichier import lire
-from probleme.ProblemeSac import ProblemeSac
 from outils.Objet import Objet
+from probleme.ProblemeSac import ProblemeSac
+
 
 def lireSac(path: str) -> ProblemeSac:
     res = [];

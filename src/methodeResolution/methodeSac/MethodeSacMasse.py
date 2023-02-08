@@ -1,4 +1,3 @@
-import random
 from methodeResolution.methodeSac.MethodeSacTri import MethodeSacTri
 from outils.Objet import Objet
 from probleme.Probleme import Probleme

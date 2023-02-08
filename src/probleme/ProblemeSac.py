@@ -3,6 +3,7 @@ from outils.Objet import Objet
 from probleme.Probleme import Probleme
 from solution.Sac import Sac
 
+
 class ProblemeSac(Probleme):
     def __init__(self, lObjets: list[Objet], capacite: int):
         self.lObjets = lObjets;

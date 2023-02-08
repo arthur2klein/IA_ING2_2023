@@ -1,4 +1,5 @@
-from outils.Point import Point;
+from outils.Point import Point
+
 
 def lire(path: str) -> list[Point]:
     res = [];
