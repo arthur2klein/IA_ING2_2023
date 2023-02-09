@@ -14,7 +14,7 @@ class ProblemeEssaim(Probleme):
     """
     def __init__(
         self,
-        fonction: Callable[[list[float], float]],
+        fonction: Callable[[list[float]], float],
         nDimensions: int,
         borneInf: float,
         borneSup: float,
@@ -214,7 +214,7 @@ def schwefel(position: list[float]) -> float:
     """
     res: float = 0.;
     for x in position:
-        res += x * math.sin(math.sqrt(math.abs(x)));
+        res += x * math.sin(math.sqrt(math.fabs(x)));
     return 418.9829 * len(position) - res;
 
 schwefel.borneInf = -500;

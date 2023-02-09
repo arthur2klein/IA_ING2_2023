@@ -1,7 +1,7 @@
 from typing import Generator
 
 
-def lire(path: str) -> Generator[list[str]]:
+def lire(path: str) -> Generator[list[str], None, None]:
     """Read a file and generate an iterator of its lines as lists of words.
 
     Args:
