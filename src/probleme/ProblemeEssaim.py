@@ -7,7 +7,7 @@ from solution.Essaim import Essaim
 
 class ProblemeEssaim(Probleme):
     """Continuous problem to solve using the PSO.
-    In the PS, a swarm of particules are randomly placed in a space assigning a
+    In the PSO, a swarm of particules are randomly placed in a space assigning a
     value to each point and the particules try to find the best points by
     following: their own inertia; the best position they have individually
     found; the best position their group has found.
