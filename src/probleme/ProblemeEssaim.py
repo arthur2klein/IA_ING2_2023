@@ -1,21 +1,44 @@
 import math
+from typing import Callable
 from outils.Particule import Particule
 from probleme.Probleme import Probleme
 from solution.Essaim import Essaim
 
 
 class ProblemeEssaim(Probleme):
+    """Continuous problem to solve using the PSO.
+    In the PS, a swarm of particules are randomly placed in a space assigning a
+    value to each point and the particules try to find the best points by
+    following: their own inertia; the best position they have individually
+    found; the best position their group has found.
+    """
     def __init__(
         self,
-        fonction,
+        fonction: Callable[[list[float], float]],
         nDimensions: int,
         borneInf: float,
         borneSup: float,
-        estDansMemeGroupe,
+        estDansMemeGroupe: Callable[[Particule, Particule], bool],
         tailleEssaim: int,
         inertie: float,
         maxConfiance: float
     ):
+        """Create a continuous problem that can be solved using the PSO.
+
+        Args:
+            fonction (Callable[[list[float]): Function to search the minimum of.
+            nDimensions (int): Number of dimensions of the search space.
+            borneInf (float): Lower bound of the search space.
+            borneSup (float): Upper bound of the search space.
+            estDansMemeGroupe (Callable[[Particule, Particule], bool]): Function
+            determining wether of not two given particules are in the same
+            group.
+            tailleEssaim (int): Size of the swarm to use for the optimisation.
+            inertie (float): Inertia of the particules of the swarm.
+            maxConfiance (float): Maximal confidence of the particules of the
+            swarm regarding the best position found by themselves and their
+            groups.
+        """
         self.fonction = fonction;
         self.tailleEssaim = tailleEssaim;
         self.borneInf = borneInf;
@@ -26,6 +49,13 @@ class ProblemeEssaim(Probleme):
         self.maxConfiance = maxConfiance;
 
     def candidat(self) -> Essaim:
+        """Create the swarm that will solve the problem.
+        The particules are placed randomly in the search space and have no
+        initail speed.
+
+        Returns:
+            Essaim: Swarm that will solve the problem.
+        """
         return Essaim(
             self.fonction,
             self.estDansMemeGroupe,
@@ -38,25 +68,74 @@ class ProblemeEssaim(Probleme):
         );
 
     def voisin(self, candidat: Essaim) -> Essaim:
+        """Let the swarm do a step of speed update and movement.
+
+        Args:
+            candidat (Essaim): Swarm to let do a step.
+
+        Returns:
+            Essaim: Same swarm as in parameter.
+        """
         candidat.etape();
         return candidat;
 
 class Topologie:
-
+    """Contains all the functions which could be used to determine wheter or
+    not two particules are in a same group.
+    """
     def tousMemeGroupe(particule1: Particule, particule2: Particule) -> bool:
+        """Assume that all particules are in the same group.
+
+        Args:
+            particule1 (Particule): First particule.
+            particule2 (Particule): Second particule.
+
+        Returns:
+            bool: Always true as all particules are in a same group.
+        """
         return True;
 
     def tousDifferents(particule1: Particule, particule2: Particule) -> bool:
+        """Assume that all particules are in different groups.
+
+        Args:
+            particule1 (Particule): First particule.
+            particule2 (Particule): Second particule.
+
+        Returns:
+            bool: Always false as all particule are in different groups.
+        """
         return False;
 
     def etoile(particule1: Particule, particule2: Particule) -> bool:
-        return particule1.id == 0 or particule2.id == 0;
+        """Assume that all particules are only neighbour to the first one.
+
+        Args:
+            particule1 (Particule): First particule.
+            particule2 (Particule): Second particule.
+
+        Returns:
+            bool: True iff one of the particule is the one with the 0 id as it
+            is the only neighbour of all other particules.
+        """
+        return particule1.id == 0 or particule2.id == 0 or\
+               particule1.id == particule2.id;
 
     def _nMemeGroupe(
         n: int,
         particule1: Particule,
         particule2: Particule
     ) -> bool:
+        """Assume that there are a given number of particules per groups.
+
+        Args:
+            n (int): Number of particules per group.
+            particule1 (Particule): First particule.
+            particule2 (Particule): Second particule.
+
+        Returns:
+            bool: True iff the particules are in a same group of the given size.
+        """
         return particule1.id // n == particule2.id // n;
 
     def _nGroupes(
@@ -64,16 +143,56 @@ class Topologie:
         particule1: Particule,
         particule2: Particule
     ) -> bool:
+        """Assume that there are a given number of groups.
+
+        Args:
+            n (int): Number of groups.
+            particule1 (Particule): First particule.
+            particule2 (Particule): Second particule.
+
+        Returns:
+            bool: True iff the particules are in the same group between the
+            given number of groups.
+        """
         return particule1.id % n == particule2.id % n;
 
-    def nombreParGroupe(n: int):
+    def nombreParGroupe(n: int) -> Callable[[Particule, Particule], bool]:
+        """Create a function assuming that they are n particules per group.
+
+        Args:
+            n (int): Number of particules per group.
+
+        Returns:
+            Callable[[Particule, Particule], bool]: Function that will allow to
+            ensure that two given particules are in a same group of the given
+            size.
+        """
         return lambda p1, p2: Topologie._nMemeGroupe(n, p1, p2);
 
-    def nombreGroupe(n: int):
+    def nombreGroupe(n: int) -> Callable[[Particule, Particule], bool]:
+        """Create a function which will assume that they are n groups.
+
+        Args:
+            n (int): Number of groups.
+
+        Returns:
+            Callable[[Particule, Particule], bool]: Function that will allow to
+            ensure that two given particules are in a same group between the
+            given number of groups.
+        """
         return lambda p1, p2: Topologie._nGroupes(n, p1, p2);
 
 # Probleme Sphere
-def sphere(position: list[float]):
+def sphere(position: list[float]) -> float:
+    """Sphere function
+    f(x1, ..., xn) = ∑(xi²)
+
+    Args:
+        position (list[float]): Antecedent.
+
+    Returns:
+        float: Image of the given antecedent by the sphere function.
+    """
     res: float = 0.;
     for x in position:
         res += x * x;
@@ -83,17 +202,35 @@ sphere.borneInf = -5.12;
 sphere.borneSup = 5.12;
 
 # Probleme Schwefel
-def schwefel(position: list[float]):
+def schwefel(position: list[float]) -> float:
+    """Schwefel function
+    f(x1, ..., xn) = 418.9829⋅n - ∑(xi - sin(√(|xi|)))
+
+    Args:
+        position (list[float]): Antecedent.
+
+    Returns:
+        float: Image of the given antecedent by the schwefel function.
+    """
     res: float = 0.;
     for x in position:
-        res += x * math.sin(math.sqrt(x if (x >= 0) else -x));
+        res += x * math.sin(math.sqrt(math.abs(x)));
     return 418.9829 * len(position) - res;
 
 schwefel.borneInf = -500;
 schwefel.borneSup = 500;
 
 # Probleme Rosenbrock
-def rosenbrock(position: list[float]):
+def rosenbrock(position: list[float]) -> float:
+    """Rosenbrock function
+    f(x1, ..., xn) = ∑(100 ⋅ (x{i+1} - xi²)² + (xi - 1)²)
+
+    Args:
+        position (list[float]): Antecedent.
+
+    Returns:
+        float: Image of the given antecedent by the rosenbrock function.
+    """
     res: float = 0.;
     for i in range(len(position) - 1):
         xi = position[i];
@@ -108,6 +245,15 @@ rosenbrock.borneSup = 2.048;
 
 # Probleme Griewank
 def griewank(position: list[float]):
+    """Griewank function
+    f(x1, ..., xn) = ∏(cos(xi/√(i+1))) + ∑(xi²/4000)
+
+    Args:
+        position (list[float]): _description_
+
+    Returns:
+        _type_: _description_
+    """
     res: float = 1.;
     for i in range(len(position)):
         res *= math.cos(position[i] / math.sqrt(i + 1));

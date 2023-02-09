@@ -8,19 +8,22 @@ from methodeResolution.methodeSac.MethodeSacAleatoire import MethodeSacAleatoire
 from methodeResolution.methodeSac.MethodeSacDensite import MethodeSacDensite
 from methodeResolution.methodeSac.MethodeSacMasse import MethodeSacMasse
 from methodeResolution.methodeSac.MethodeSacValeur import MethodeSacValeur
-from methodeResolution.methodeTSP.MethodeCheminAleatoire import mehodeCheminAleatoire
+from methodeResolution.methodeTSP.MethodeCheminAleatoire import MethodeCheminAleatoire
 from methodeResolution.methodeTSP.MethodeCheminHillClimbing import MethodeCheminHillClimbing
 from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, griewank, rosenbrock, schwefel, sphere
 
 
 def testComplet():
+    """Go through all the methods and problems of the td to display their
+    performance with arbitrary paramters.
+    """
     nIterations = 10;
 
     print("TSP:");
     path = "ressources/tsp/16.tsp";
     probleme = lireTSP(path);
     print("Methode aléatoire:")
-    methode = mehodeCheminAleatoire(probleme);
+    methode = MethodeCheminAleatoire(probleme);
     print(methode.tester(nIterations));
     print("\nMethode hill climbing:")
     methode = MethodeCheminHillClimbing(probleme);

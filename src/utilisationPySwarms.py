@@ -6,6 +6,9 @@ from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, rosenbrock
 
 #pipenv run pip install pyswarms
 def resolutionAvecPySwarms():
+    """Solve the same PSO Rosenbrock problem with the pyswarm library as well
+    as the method defined in this project.
+    """
     options = {
         'c1': 1.47,
         'c2': 1.47,
