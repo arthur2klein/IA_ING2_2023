@@ -17,7 +17,8 @@ def resolutionAvecPySwarms():
         options = options,
         ftol = 1e-8
     );
-    best_cost, best_pos = optimizer_10particules.optimize(fx.rosenbrock, iters = 1000);
+    best_cost, best_pos = optimizer_10particules\
+        .optimize(fx.rosenbrock, iters = 1000);
     print("best_cost: {}\nbest_pos: {}".format(best_cost, best_pos));
 
     print("Comparaison:")
@@ -26,7 +27,7 @@ def resolutionAvecPySwarms():
         10,
         rosenbrock.borneInf,
         rosenbrock.borneSup,
-        Topologie.tousMemeGroupe,
+        Topologie.etoile,
         10,
         0.7,
         1.47
@@ -34,4 +35,10 @@ def resolutionAvecPySwarms():
     methode = MethodePSO(probleme, 1000);
     solution = methode.resoudre();
     best_cost, best_pos = solution.evaluer(), solution.meilleurPos();
-    print("best_cost: {:0.5f}\nbest_pos: {}".format(best_cost, ["{:0.5f}".format(x) for x in best_pos]));
+    print(
+        "best_cost: {:0.5f}\nbest_pos: {}"\
+            .format(
+                best_cost,
+                ["{:0.5f}".format(x) for x in best_pos]
+            )
+    );

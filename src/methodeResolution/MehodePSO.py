@@ -4,7 +4,11 @@ from solution.Essaim import Essaim
 
 
 class MethodePSO(Methode):
-    def __init__(self, probleme: ProblemeEssaim, nEtapes: int):
+    def __init__(
+            self,
+            probleme: ProblemeEssaim,
+            nEtapes: int
+        ):
         self.probleme = probleme;
         self.nEtapes = nEtapes;
 

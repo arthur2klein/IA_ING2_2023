@@ -1,4 +1,4 @@
-from cmath import sqrt
+from math import sqrt
 
 
 class Statistiques:

@@ -41,13 +41,19 @@ class Essaim(Solution):
             0,
             0
         );
-        res.particules = [Particule.fromParticule(x) for x in essaim.particules];
+        res.particules = [
+            Particule.fromParticule(x)
+            for x in essaim.particules
+        ];
         return res;
     
     def meilleurPos(self) -> list[float]:
         res = None;
         for particule in self.particules:
-            if (res == None or self.valeur(particule) < self.valeur(particule)):
+            if (
+                res == None or
+                self.valeur(particule) < self.valeur(particule)
+            ):
                 res = particule;
         return res.position;
         
@@ -70,7 +76,10 @@ class Essaim(Solution):
             particule.majVitesse(self.meilleurGroupe(particule));
         for particule in self.particules:
             particule.seDeplacer();
-            if (self.valeur(particule) < self.valeurPos(particule.preferee)):
+            if (
+                self.valeur(particule) <
+                self.valeurPos(particule.preferee)
+            ):
                 particule.majPreferee();
 
     def meilleurGroupe(self, particule: Particule) -> list[float]:
@@ -78,7 +87,10 @@ class Essaim(Solution):
         for autre in self.particules:
             if (not self.estDansMemeGroupe(particule, autre)):
                 continue;
-            if (self.valeurPos(autre.preferee) < self.valeurPos(res)):
+            if (
+                self.valeurPos(autre.preferee) <
+                self.valeurPos(res)
+            ):
                 res = autre.preferee[:];
         return res;
 

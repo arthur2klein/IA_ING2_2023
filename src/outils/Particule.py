@@ -54,7 +54,10 @@ class Particule:
         largeurEspace = self.borneSup - self.borneInf;
         for i in range(len(self.position)):
             composante = self.position[i];
-            while composante < self.borneInf or composante > self.borneSup:
+            while (
+                composante < self.borneInf or
+                composante > self.borneSup
+            ):
                 if composante > self.borneSup:
                     composante = 2 * self.borneSup - composante;
                 if composante < self.borneInf:
@@ -94,10 +97,16 @@ class Particule:
             positionPrevue = self.vitesse[i] + self.position[i];
             if positionPrevue > self.borneSup:
                 ratio = (self.borneSup - self.position[i]) / self.vitesse[i];
-                self.vitesse = [composante * ratio for composante in self.vitesse];
+                self.vitesse = [
+                    composante * ratio
+                    for composante in self.vitesse
+                ];
             if positionPrevue < self.borneInf:
                 ratio = (self.borneInf - self.position[i]) / self.vitesse[i];
-                self.vitesse = [composante * ratio for composante in self.vitesse];
+                self.vitesse = [
+                    composante * ratio
+                    for composante in self.vitesse
+                ];
 
     def majPreferee(self):
         self.preferee = self.position[:];
@@ -111,7 +120,12 @@ class Particule:
         return True;
 
     def __str__(self):
-        return "Particule d'id {} en position {} avec une vitesse {:0.2E}".format(self.id, ["{0:0.2E}".format(pos) for pos in self.position], norme(self.vitesse));
+        return "Particule d'id {} en position {} avec une vitesse {:0.2E}"\
+            .format(
+                self.id,
+                ["{0:0.2E}".format(pos) for pos in self.position],
+                norme(self.vitesse)
+            );
 
 
 def norme(liste: list[float]) -> float:

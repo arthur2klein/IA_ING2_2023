@@ -5,7 +5,11 @@ from solution.Sac import Sac
 
 
 class ProblemeSac(Probleme):
-    def __init__(self, lObjets: list[Objet], capacite: int):
+    def __init__(
+        self,
+        lObjets: list[Objet],
+        capacite: int
+    ):
         self.lObjets = lObjets;
         self.capacite = capacite;
     

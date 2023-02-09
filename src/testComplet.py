@@ -61,7 +61,7 @@ def testComplet():
         sphere.borneInf,
         sphere.borneSup,
         Topologie.tousMemeGroupe,
-        20,
+        15,
         0.7,
         1.47
     );
@@ -74,11 +74,11 @@ def testComplet():
         griewank.borneInf,
         griewank.borneSup,
         Topologie.nombreGroupe(5),
-        20,
+        15,
         0.7,
         1.47
     );
-    methode = MethodePSO(probleme, 2000);
+    methode = MethodePSO(probleme, 1000);
     print(methode.tester(nIterations));
     print("Probleme Rosenbrock:")
     probleme = ProblemeEssaim(
@@ -87,11 +87,11 @@ def testComplet():
         rosenbrock.borneInf,
         rosenbrock.borneSup,
         Topologie.nombreParGroupe(5),
-        20,
+        15,
         0.7,
         1.47
     );
-    methode = MethodePSO(probleme, 5000);
+    methode = MethodePSO(probleme, 2000);
     print(methode.tester(nIterations));
     print("Probleme Schwefel:")
     probleme = ProblemeEssaim(
@@ -100,10 +100,10 @@ def testComplet():
         schwefel.borneInf,
         schwefel.borneSup,
         Topologie.tousMemeGroupe,
-        50,
+        20,
         0.7,
         1.47
     );
-    methode = MethodePSO(probleme, 1_000_000);
+    methode = MethodePSO(probleme, 2000);
     print(methode.tester(nIterations));
     print("\n----------\n");

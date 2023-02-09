@@ -16,11 +16,19 @@ class Chemin(Solution):
     def getDernier(self) -> Point:
         return self.points[-1];
 
-    def inverserEntre(self, indice1: int, indice2: int):
+    def inverserEntre(
+        self,
+        indice1: int,
+        indice2: int
+    ):
         for i in range(indice1, int((indice1 + indice2) / 2)):
             self.inverser(indice1, indice2);
 
-    def inverser(self, indice1: int, indice2: int):
+    def inverser(
+        self,
+        indice1: int,
+        indice2: int
+    ):
         temp = self.points[indice1];
         self.points[indice1] = self.points[indice2];
         self.points[indice2] = temp;

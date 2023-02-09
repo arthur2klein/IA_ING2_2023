@@ -4,7 +4,12 @@ from solution.Solution import Solution
 
 
 class MethodeLAHCMin(Methode):
-    def __init__(self, probleme: Probleme, tailleMem: int, nIter: int):
+    def __init__(
+            self,
+            probleme: Probleme,
+            tailleMem: int,
+            nIter: int
+        ):
         self.probleme = probleme;
         self.tailleMem = tailleMem;
         self.nIter = nIter;

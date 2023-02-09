@@ -42,18 +42,33 @@ class ProblemeEssaim(Probleme):
         return candidat;
 
 class Topologie:
+
     def tousMemeGroupe(particule1: Particule, particule2: Particule) -> bool:
         return True;
+
     def tousDifferents(particule1: Particule, particule2: Particule) -> bool:
         return False;
+
     def etoile(particule1: Particule, particule2: Particule) -> bool:
         return particule1.id == 0 or particule2.id == 0;
-    def _nMemeGroupe(n: int, particule1: Particule, particule2: Particule) -> bool:
+
+    def _nMemeGroupe(
+        n: int,
+        particule1: Particule,
+        particule2: Particule
+    ) -> bool:
         return particule1.id // n == particule2.id // n;
-    def _nGroupes(n: int, particule1: Particule, particule2: Particule) -> bool:
+
+    def _nGroupes(
+        n: int,
+        particule1: Particule,
+        particule2: Particule
+    ) -> bool:
         return particule1.id % n == particule2.id % n;
+
     def nombreParGroupe(n: int):
         return lambda p1, p2: Topologie._nMemeGroupe(n, p1, p2);
+
     def nombreGroupe(n: int):
         return lambda p1, p2: Topologie._nGroupes(n, p1, p2);
 

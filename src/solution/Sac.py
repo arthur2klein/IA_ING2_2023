@@ -4,7 +4,11 @@ from solution.Solution import Solution
 
 
 class Sac(Solution):
-    def __init__(self, capacite: int, contenu: list[Objet]):
+    def __init__(
+            self,
+            capacite: int,
+            contenu: list[Objet]
+        ):
         self.capacite: int = capacite;
         self.contenu: list[Objet] = contenu;
     

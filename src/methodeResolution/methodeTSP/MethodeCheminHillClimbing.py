@@ -29,7 +29,10 @@ def candidat(lPoints: list[Point]) -> Chemin:
     while restants:
         closest = restants[0];
         for p in restants:
-            if (p.distance(res.getDernier()) < closest.distance(res.getDernier())):
+            if (
+                p.distance(res.getDernier()) <
+                closest.distance(res.getDernier())
+            ):
                 closest = p;
         res.addPoint(closest);
         restants.remove(closest);
