@@ -47,4 +47,9 @@ class ProblemeSac(Probleme):
         return res;
 
     def getObjets(self) -> list[Objet]:
+        """Returns a copy of the list of possible objects.
+
+        Returns:
+            list[Objet]: Copy of the list of possible objects.
+        """
         return self.lObjets[:];
