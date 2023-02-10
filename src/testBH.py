@@ -4,7 +4,7 @@ from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, griewank
 
 
 ###############################################################################
-# 1000 itérations pour schwefel:
+# 1000 itérations pour griewank:
 # ┌────────────┬────────────┬────────┬─────────────┬────────────┬───────┐
 # │ Strategie  │ périodique │ rebond │ plus proche │ limitation │ arrêt │  
 # ├────────────┼────────────┼────────┼─────────────┼────────────┼───────┤
