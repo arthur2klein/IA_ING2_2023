@@ -79,6 +79,5 @@ def critereMetropolis(delta: float, temperature: float) -> bool:
         bool: True iff the evaluation of the new point is better or is not
         worse enough for the new point not to be randomly chosen.
     """
-    if (delta <= 0):
-        return True;
-    return random.random() < math.exp(-delta / temperature);
+    return delta <= 0 or\
+           random.random() < math.exp(-delta / temperature);

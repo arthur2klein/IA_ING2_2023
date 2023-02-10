@@ -12,14 +12,33 @@ class Essaim(Solution):
         self,
         fonction: Callable[[list[float]], float],
         estDansMemeGroupe: Callable[[Particule, Particule], bool],
+        particules: list[Particule]
+    ):
+        """Create a swarm of particules from a list of particules.
+
+        Args:
+            fonction (Callable[[list[float]], float]): Function that the swarm
+            will try to minimize.
+            estDansMemeGroupe (Callable[[Particule, Particule], bool]): _description_
+            Function that determine wheter of not two particules are in a same
+            group.
+            particules (list[Particule]): Particules of the swarm.
+        """
+        self.fonction = fonction;
+        self.estDansMemeGroupe = estDansMemeGroupe;
+        self.particules = particules;
+        
+    def createSwarm(
+        fonction: Callable[[list[float]], float],
+        estDansMemeGroupe: Callable[[Particule, Particule], bool],
         borneInf: float,
         borneSup: float,
         nDimensions: int,
         taille: int,
         inertie: float,
         maxConfiance: float,
-    ):
-        """Create a swarm of particules.
+    ) -> Essaim:
+        """Create a swarm of particules from scratch.
 
         Args:
             fonction (Callable[[list[float]], float]): Function that the swarm
@@ -35,21 +54,23 @@ class Essaim(Solution):
             maxConfiance (float): Maximal confidence of the particules of the
             swarm regarding the best position that they and their group has
             already found.
+        
+        Returns:
+            Essaim: New swarm with the parameters.
         """
-        self.fonction = fonction;
-        self.estDansMemeGroupe = estDansMemeGroupe;
-        self.particules: list[Particule] = [
-            Particule(
-                i,
-                inertie,
-                maxConfiance,
-                [random.random() * (borneSup - borneInf) + borneInf
-                for i in range(nDimensions)],
-                borneInf,
-                borneSup
-            )
-            for i in range(taille)
-        ];
+        return Essaim(
+            fonction,
+            estDansMemeGroupe,
+            [Particule(
+                    i,
+                    inertie,
+                    maxConfiance,
+                    [random.random() * (borneSup - borneInf) + borneInf
+                    for i in range(nDimensions)],
+                    borneInf,
+                    borneSup
+                ) for i in range(taille)]
+        );
 
     def fromEssaim(essaim: Essaim) -> Essaim:
         """Copy the given swarm.
@@ -60,21 +81,11 @@ class Essaim(Solution):
         Returns:
             Essaim: Copy of the given swarm.
         """
-        res = Essaim(
+        return Essaim(
             essaim.fonction,
             essaim.estDansMemeGroupe,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
+            [Particule.fromParticule(x) for x in essaim.particules]
         );
-        res.particules = [
-            Particule.fromParticule(x)
-            for x in essaim.particules
-        ];
-        return res;
     
     def meilleurPos(self) -> list[float]:
         """Determine the best position occupated by the swarm.

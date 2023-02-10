@@ -56,7 +56,7 @@ class ProblemeEssaim(Probleme):
         Returns:
             Essaim: Swarm that will solve the problem.
         """
-        return Essaim(
+        return Essaim.createSwarm(
             self.fonction,
             self.estDansMemeGroupe,
             self.borneInf,

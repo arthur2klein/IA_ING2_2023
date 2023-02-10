@@ -7,11 +7,11 @@ from solution.Chemin import Chemin
 class ProblemeTSP(Probleme):
     """TSP
     """
-    def __init__(self, lPoints):
+    def __init__(self, lPoints: list[Point]):
         """Create a TSP with the given list of points to visit.
 
         Args:
-            lPoints (_type_): Points that will have to be visited.
+            lPoints (list[Point]): Points that will have to be visited.
         """
         self.lPoints: list[Point] = lPoints;
     
