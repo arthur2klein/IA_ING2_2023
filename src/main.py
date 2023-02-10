@@ -1,8 +1,10 @@
+from testBH import testBH
 from testComplet import testComplet
 from utilisationPySwarms import resolutionAvecPySwarms
+from testTopologie import testTopologie
 
 
-def __main__():
+def main():
     testComplet();
     
-__main__();
+main();

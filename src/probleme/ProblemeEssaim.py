@@ -107,7 +107,7 @@ class Topologie:
         """
         return False;
 
-    def etoile(particule1: Particule, particule2: Particule) -> bool:
+    def roue(particule1: Particule, particule2: Particule) -> bool:
         """Assume that all particules are only neighbour to the first one.
 
         Args:
@@ -182,6 +182,52 @@ class Topologie:
         """
         return lambda p1, p2: Topologie._nGroupes(n, p1, p2);
 
+    def _vonNeumann(
+        largeur: int,
+        longueur: int,
+        particule1: Particule,
+        particule2: Particule
+    ) -> bool:
+        """Assumes that the particules are in a von Neumann topology.
+
+        Args:
+            largeur (int): Width of the grid.
+            longueur (int): Length of the grid.
+            particule1 (Particule): First particule.
+            particule2 (Particule): Second particule.
+
+        Returns:
+            bool: True iff the two particules are in a same von Neumann
+            topology.
+        """
+        taille = largeur * longueur;
+        id1 = particule1.id;
+        id2 = particule2.id;
+        return (id1 + 1) % largeur == id2 or\
+               (id2 + 1) % largeur == id1 or\
+               (id1 + largeur) % taille == id2 or\
+               (id2 + largeur) % taille == id1;
+
+    def vonNeumann(
+        largeur: int,
+        longueur: int
+    ) -> Callable[[Particule, Particule], bool]:
+        """Create a function which will assume that the particules are bound in
+        a von Neumann topology.
+        Each particule has four neighbours like if they where arranged in a
+        two-dimensional grid wrapped in the border.
+
+        Args:
+            largeur (int): Width of the grid.
+            longueur (int): Length of the grid.
+
+        Returns:
+            Callable[[Particule, Particule], bool]: Function that will allow to
+            ensure that two given particules are neighbour in a von Neumann
+            topology.
+        """
+        return lambda p1, p2: Topologie._vonNeumann(largeur, longueur, p1, p2);
+
 # Probleme Sphere
 def sphere(position: list[float]) -> float:
     """Sphere function
@@ -244,7 +290,7 @@ rosenbrock.borneInf = -2.048;
 rosenbrock.borneSup = 2.048;
 
 # Probleme Griewank
-def griewank(position: list[float]):
+def griewank(position: list[float]) -> float:
     """Griewank function
     f(x1, ..., xn) = ∏(cos(xi/√(i+1))) + ∑(xi²/4000)
 
@@ -252,7 +298,7 @@ def griewank(position: list[float]):
         position (list[float]): _description_
 
     Returns:
-        _type_: _description_
+        float: _description_
     """
     res: float = 1.;
     for i in range(len(position)):

@@ -1,9 +1,27 @@
 from __future__ import annotations
+from enum import auto
 import math
 import random
 
+class EnumBH:
+    """Enumeration of method of Boundary handling:
+    - ARRET_FRONTIERE stops the particule when reaching the boundary,
+    - REBOND_FRONTIERE makes the particule bounde when reaching the boundary,
+    - PLUS_PROCHE_FRONTIERE bring the particule back to the nearest point of
+    the space.
+    - LIMITE_VITESSE limits the speed of the particule to ensure that it does
+    not go to far from the boundary,
+    - ESPACE_PERIODIQUE places the particule back in the boundary like if the
+    space was periodic.
+    """
+    ARRET_FRONTIERE = auto();    
+    REBOND_FRONTIERE = auto();    
+    PLUS_PROCHE_FRONTIERE = auto();    
+    LIMITE_VITESSE = auto();    
+    ESPACE_PERIODIQUE = auto();    
 
 class Particule:
+    bhMethod: EnumBH = EnumBH.REBOND_FRONTIERE;
     """A particule of the PSO method.
     """
     def __init__(
@@ -76,7 +94,7 @@ class Particule:
         particule to follow.
 
         Args:
-            cible (list[float]): Position the the swarm wants the particule to
+            cible (list[float]): Position that the swarm wants the particule to
             reach.
         """
         confiancePreferee = random.random() * self.maxConfiance;
@@ -89,20 +107,36 @@ class Particule:
         ];
 
     def seDeplacer(self):
-        """Move according to its speed.
+        """Move according to its speed and boundary handling strategy.
         """
-        # self.limiterVitesse();
-        # self.limiterAuxBornes();
-        self.position = [self.position[i] + self.vitesse[i]
+        match (self.bhMethod):
+            case EnumBH.ARRET_FRONTIERE:
+                hasLimitedSpeed = self.limiterAuxBornes();
+                self.position = [self.position[i] + self.vitesse[i]
+                                for i in range(len(self.position))];
+                if (hasLimitedSpeed):
+                    self.vitesse = [0 for i in range(len(self.position))];
+            case EnumBH.REBOND_FRONTIERE:
+                self.position = [self.position[i] + self.vitesse[i]
                          for i in range(len(self.position))];
-        self.replacerPositionDansEspacePeriodique();
-        # self.replacerPositionDansEspaceRebond();
+                self.replacerPositionDansEspaceRebond();
+            case EnumBH.PLUS_PROCHE_FRONTIERE:
+                self.position = [self.position[i] + self.vitesse[i]
+                         for i in range(len(self.position))];
+                self.replacerPlusProche();
+            case EnumBH.LIMITE_VITESSE:
+                self.limiterVitesse();
+                self.position = [self.position[i] + self.vitesse[i]
+                                for i in range(len(self.position))];
+            case EnumBH.ESPACE_PERIODIQUE:
+                self.position = [self.position[i] + self.vitesse[i]
+                                for i in range(len(self.position))];
+                self.replacerPositionDansEspacePeriodique();
     
     def replacerPositionDansEspaceRebond(self):
         """Keep the particule in the search space by making it bounce from the
         boundaries.
         """
-        largeurEspace = self.borneSup - self.borneInf;
         for i in range(len(self.position)):
             composante = self.position[i];
             while (
@@ -111,9 +145,23 @@ class Particule:
             ):
                 if composante > self.borneSup:
                     composante = 2 * self.borneSup - composante;
+                    self.vitesse[i] *= -1;
                 if composante < self.borneInf:
+                    self.vitesse[i] *= -1;
                     composante = 2 * self.borneInf - composante;
             self.position[i] = composante;
+
+    def replacerPlusProche(self):
+        """Keep the particule in the search space by bringing it to the nearest
+        point of the space.
+        """
+        for i in range(len(self.position)):
+            if self.position[i] > self.borneSup:
+                self.position[i] = self.borneSup;
+                self.vitesse[i] = 0;
+            if self.position[i] < self.borneInf:
+                self.position[i] = self.borneInf;
+                self.vitesse[i] = 0;
 
     def limiterVitesse(self):
         """Limit the speed of the particule to try to keep it in the reasearch
@@ -137,11 +185,15 @@ class Particule:
                 composante += largeurEspace;
             self.position[i] = composante;
         
-    def limiterAuxBornes(self):
+    def limiterAuxBornes(self) -> bool:
         """Keep the particule in the search space by ensuring that, if the
         current speed should bring it outside of the space, it stops when
         reaching the boundaries of the space instead.
+
+        Returns:
+            bool: True iff the particule had to be stopped.
         """
+        res = False;
         for i in range(len(self.vitesse)):
             ###################################################################
             # On est en position p avec une vitesse v
@@ -155,19 +207,24 @@ class Particule:
             # On multiplie donc le vecteur vitesse par inf - p / v
             # 
             # #################################################################
+            if (self.vitesse[i] == 0):
+                continue;
             positionPrevue = self.vitesse[i] + self.position[i];
             if positionPrevue > self.borneSup:
+                res = True;
                 ratio = (self.borneSup - self.position[i]) / self.vitesse[i];
                 self.vitesse = [
                     composante * ratio
                     for composante in self.vitesse
                 ];
             if positionPrevue < self.borneInf:
+                res = True;
                 ratio = (self.borneInf - self.position[i]) / self.vitesse[i];
                 self.vitesse = [
                     composante * ratio
                     for composante in self.vitesse
                 ];
+        return res;
 
     def majPreferee(self):
         """Update the best position known by the particule to match the current

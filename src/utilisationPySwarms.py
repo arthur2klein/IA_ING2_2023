@@ -30,7 +30,7 @@ def resolutionAvecPySwarms():
         10,
         rosenbrock.borneInf,
         rosenbrock.borneSup,
-        Topologie.etoile,
+        Topologie.roue,
         10,
         0.7,
         1.47
