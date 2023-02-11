@@ -16,10 +16,10 @@ def lireSac(path: str) -> ProblemeSac:
         list of Objet.
     """
     res = [];
-    i = 0;
+    estPremiereLigne = True;
     for infos in lire(path):
-        if (i == 0):
+        if (estPremiereLigne):
             capacite = int(infos[1]);
+            estPremiereLigne = False;
         res += [Objet(int(infos[1]), int(infos[0]))];
-        i += 1;
     return ProblemeSac(res, capacite);
