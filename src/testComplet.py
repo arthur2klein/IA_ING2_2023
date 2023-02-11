@@ -20,7 +20,7 @@ def testComplet():
     nIterations = 10;
 
     print("TSP:");
-    path = "ressources/tsp/16.tsp";
+    path = "ressources/tsp/48.tsp";
     probleme = lireTSP(path);
     print("Methode aléatoire:")
     methode = MethodeCheminAleatoire(probleme);
@@ -29,15 +29,15 @@ def testComplet():
     methode = MethodeCheminHillClimbing(probleme);
     print(methode.tester(nIterations));
     print("\nMethode recuit:")
-    methode = MethodeRecuit(probleme, 0.9, 300, 0.001, 20);
+    methode = MethodeRecuit(probleme, 0.95, 300, 0.001, 20);
     print(methode.tester(nIterations));
     print("\nMethode lahc:")
-    methode = MethodeLAHCMin(probleme, 30, 5000);
+    methode = MethodeLAHCMin(probleme, 50, 20_000);
     print(methode.tester(nIterations));
     print("\n----------\n");
      
     print("Sac:");
-    path = "ressources/sac/ks_40_0";
+    path = "ressources/sac/ks_400_0";
     probleme = lireSac(path);
     print("Methode aléatoire:")
     methode = MethodeSacAleatoire(probleme);
@@ -52,7 +52,7 @@ def testComplet():
     methode = MethodeSacDensite(probleme);
     print(methode.tester(nIterations));
     print("Methode lahc:")
-    methode = MethodeLAHCMax(probleme, 20, 1000);
+    methode = MethodeLAHCMax(probleme, 50, 20_000);
     print(methode.tester(nIterations));
     print("\n----------\n");
 

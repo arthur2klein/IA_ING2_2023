@@ -206,7 +206,8 @@ class Topologie:
         return (id1 + 1) % largeur == id2 or\
                (id2 + 1) % largeur == id1 or\
                (id1 + largeur) % taille == id2 or\
-               (id2 + largeur) % taille == id1;
+               (id2 + largeur) % taille == id1 or\
+               id1 == id2;
 
     def vonNeumann(
         largeur: int,
