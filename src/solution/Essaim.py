@@ -97,7 +97,7 @@ class Essaim(Solution):
         for particule in self.particules:
             if (
                 res == None or
-                self.valeur(particule) < self.valeur(particule)
+                self.valeur(particule) < self.valeur(res)
             ):
                 res = particule;
         return res.position;

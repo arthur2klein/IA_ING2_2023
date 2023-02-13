@@ -53,7 +53,7 @@ class Particule:
         self.maxConfiance = maxConfiance;
         self.position = position;
         self.preferee = position[:];
-        self.vitesse = [0. for i in self.position];
+        self.vitesse = [0. for _ in self.position];
         self.borneInf = borneInf;
         self.borneSup = borneSup;
         self.limVitesse = (borneSup - borneInf) * 0.5;
@@ -65,7 +65,7 @@ class Particule:
             particule (Particule): Particule to copy.
 
         Returns:
-            _type_: Copy of the given particule.
+            Particule: Copy of the given particule.
         """
         return Particule(
             particule.id,
@@ -180,6 +180,18 @@ class Particule:
         for i in range(len(self.position)):
             composante = self.position[i];
             while composante > self.borneSup:
+            ###################################################################
+            # On est en position p avec une vitesse v
+            # Si p + v > sup, on veut p + v' = sup
+            # Donc v' = sup - p
+            # On multiplie donc le vecteur vitesse par sup - p / v
+            # 
+            # On est en position pi avec une vitesse v
+            # Si p + v < inf, on veut p + v' = inf
+            # Donc v' = inf - p
+            # On multiplie donc le vecteur vitesse par inf - p / v
+            # 
+            # ################################################################# > self.borneSup:
                 composante -= largeurEspace;
             while composante < self.borneInf:
                 composante += largeurEspace;

@@ -95,17 +95,38 @@ class Topologie:
         """
         return True;
 
-    def tousDifferents(particule1: Particule, particule2: Particule) -> bool:
-        """Assume that all particules are in different groups.
+    def _cycle(
+        nParticules: int,
+        particule1: Particule,
+        particule2: Particule
+    ) -> bool:
+        """Assume that the topology is a cycle.
 
         Args:
+            nParticules (int): Total number of particules.
             particule1 (Particule): First particule.
             particule2 (Particule): Second particule.
 
         Returns:
-            bool: Always false as all particule are in different groups.
+            bool: True iff the particules follow each other in the cycle.
         """
-        return False;
+        return (particule1.id + 1) % nParticules == particule2.id or\
+               (particule2.id + 1) % nParticules == particule1.id;
+
+    def cycle(
+        nParticules: int
+    ) -> Callable[[Particule, Particule], bool]:
+        """Create a fonction which assumes that the particules topology is a
+        cycle.
+
+        Args:
+            nParticules (int): Total number of particules.
+
+        Returns:
+            Callable[[Particule, Particule], bool]: Function returning true
+            iff the two given particules follow each orther in a cycle.
+        """
+        return lambda p1, p2: Topologie._cycle(nParticules, p1, p2);
 
     def roue(particule1: Particule, particule2: Particule) -> bool:
         """Assume that all particules are only neighbour to the first one.
@@ -121,7 +142,7 @@ class Topologie:
         return particule1.id == 0 or particule2.id == 0 or\
                particule1.id == particule2.id;
 
-    def _nMemeGroupe(
+    def _clustersDeTaille(
         n: int,
         particule1: Particule,
         particule2: Particule
@@ -129,34 +150,21 @@ class Topologie:
         """Assume that there are a given number of particules per groups.
 
         Args:
-            n (int): Number of particules per group.
+            n (int): Number of particules per cluster.
             particule1 (Particule): First particule.
             particule2 (Particule): Second particule.
 
         Returns:
             bool: True iff the particules are in a same group of the given size.
         """
-        return particule1.id // n == particule2.id // n;
+        id1modn = particule1.id % n;
+        id1overn = particule1.id // n;
+        id2modn = particule2.id % n;
+        id2overn = particule2.id // n;
+        return particule1.id // n == particule2.id // n or\
+            (id1modn == id2overn and id1overn == id2modn);
 
-    def _nGroupes(
-        n: int,
-        particule1: Particule,
-        particule2: Particule
-    ) -> bool:
-        """Assume that there are a given number of groups.
-
-        Args:
-            n (int): Number of groups.
-            particule1 (Particule): First particule.
-            particule2 (Particule): Second particule.
-
-        Returns:
-            bool: True iff the particules are in the same group between the
-            given number of groups.
-        """
-        return particule1.id % n == particule2.id % n;
-
-    def nombreParGroupe(n: int) -> Callable[[Particule, Particule], bool]:
+    def clustersDeTaille(n: int) -> Callable[[Particule, Particule], bool]:
         """Create a function assuming that they are n particules per group.
 
         Args:
@@ -167,20 +175,7 @@ class Topologie:
             ensure that two given particules are in a same group of the given
             size.
         """
-        return lambda p1, p2: Topologie._nMemeGroupe(n, p1, p2);
-
-    def nombreGroupe(n: int) -> Callable[[Particule, Particule], bool]:
-        """Create a function which will assume that they are n groups.
-
-        Args:
-            n (int): Number of groups.
-
-        Returns:
-            Callable[[Particule, Particule], bool]: Function that will allow to
-            ensure that two given particules are in a same group between the
-            given number of groups.
-        """
-        return lambda p1, p2: Topologie._nGroupes(n, p1, p2);
+        return lambda p1, p2: Topologie._clustersDeTaille(n, p1, p2);
 
     def _vonNeumann(
         largeur: int,
@@ -229,84 +224,81 @@ class Topologie:
         """
         return lambda p1, p2: Topologie._vonNeumann(largeur, longueur, p1, p2);
 
-# Probleme Sphere
-def sphere(position: list[float]) -> float:
-    """Sphere function
-    f(x1, ..., xn) = ∑(xi²)
+class FonctionsPSO:
+    def sphere(position: list[float]) -> float:
+        """Sphere function
+        f(x1, ..., xn) = ∑(xi²)
 
-    Args:
-        position (list[float]): Antecedent.
+        Args:
+            position (list[float]): Antecedent.
 
-    Returns:
-        float: Image of the given antecedent by the sphere function.
-    """
-    res: float = 0.;
-    for x in position:
-        res += x * x;
-    return res;
+        Returns:
+            float: Image of the given antecedent by the sphere function.
+        """
+        res: float = 0.;
+        for x in position:
+            res += x * x;
+        return res;
 
-sphere.borneInf = -5.12;
-sphere.borneSup = 5.12;
+    sphere.borneInf = -5.12;
+    sphere.borneSup = 5.12;
 
-# Probleme Schwefel
-def schwefel(position: list[float]) -> float:
-    """Schwefel function
-    f(x1, ..., xn) = 418.9829⋅n - ∑(xi - sin(√(|xi|)))
+    def schwefel(position: list[float]) -> float:
+        """Schwefel function
+        f(x1, ..., xn) = 418.9829⋅n - ∑(xi - sin(√(|xi|)))
 
-    Args:
-        position (list[float]): Antecedent.
+        Args:
+            position (list[float]): Antecedent.
 
-    Returns:
-        float: Image of the given antecedent by the schwefel function.
-    """
-    res: float = 0.;
-    for x in position:
-        res += x * math.sin(math.sqrt(math.fabs(x)));
-    return 418.9829 * len(position) - res;
+        Returns:
+            float: Image of the given antecedent by the schwefel function.
+        """
+        res: float = 0.;
+        for x in position:
+            res += x * math.sin(math.sqrt(math.fabs(x)));
+        return 418.9829 * len(position) - res;
 
-schwefel.borneInf = -500;
-schwefel.borneSup = 500;
+    schwefel.borneInf = -500;
+    schwefel.borneSup = 500;
 
-# Probleme Rosenbrock
-def rosenbrock(position: list[float]) -> float:
-    """Rosenbrock function
-    f(x1, ..., xn) = ∑(100 ⋅ (x{i+1} - xi²)² + (xi - 1)²)
+    def rosenbrock(position: list[float]) -> float:
+        """Rosenbrock function
+        f(x1, ..., xn) = ∑(100 ⋅ (x{i+1} - xi²)² + (xi - 1)²)
 
-    Args:
-        position (list[float]): Antecedent.
+        Args:
+            position (list[float]): Antecedent.
 
-    Returns:
-        float: Image of the given antecedent by the rosenbrock function.
-    """
-    res: float = 0.;
-    for i in range(len(position) - 1):
-        xi = position[i];
-        xip1 = position[i + 1];
-        m1 = (xip1 - xi * xi);
-        m2 = xi - 1;
-        res += 100 * m1 * m1 + m2 * m2;
-    return res;
+        Returns:
+            float: Image of the given antecedent by the rosenbrock function.
+        """
+        res: float = 0.;
+        for i in range(len(position) - 1):
+            xi = position[i];
+            xip1 = position[i + 1];
+            m1 = (xip1 - xi * xi);
+            m2 = xi - 1;
+            res += 100 * m1 * m1 + m2 * m2;
+        return res;
 
-rosenbrock.borneInf = -2.048;
-rosenbrock.borneSup = 2.048;
+    rosenbrock.borneInf = -2.048;
+    rosenbrock.borneSup = 2.048;
 
-# Probleme Griewank
-def griewank(position: list[float]) -> float:
-    """Griewank function
-    f(x1, ..., xn) = ∏(cos(xi/√(i+1))) + ∑(xi²/4000)
+    def griewank(position: list[float]) -> float:
+        """Griewank function
+        f(x1, ..., xn) = ∏(cos(xi/√(i+1))) + ∑(xi²/4000)
 
-    Args:
-        position (list[float]): _description_
+        Args:
+            position (list[float]): _description_
 
-    Returns:
-        float: _description_
-    """
-    res: float = 1.;
-    for i in range(len(position)):
-        res *= math.cos(position[i] / math.sqrt(i + 1));
-    for x in position:
-        res += x * x / 4000.;
-    return res + 1.;
+        Returns:
+            float: _description_
+        """
+        res: float = 1.;
+        for i in range(len(position)):
+            res *= math.cos(position[i] / math.sqrt(i + 1));
+        for x in position:
+            res += x * x / 4000.;
+        return res + 1.;
 
-griewank.borneInf = -600;
-griewank.borneSup = 600;
+    griewank.borneInf = -600;
+    griewank.borneSup = 600;

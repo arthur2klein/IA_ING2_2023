@@ -10,7 +10,7 @@ from methodeResolution.methodeSac.MethodeSacMasse import MethodeSacMasse
 from methodeResolution.methodeSac.MethodeSacValeur import MethodeSacValeur
 from methodeResolution.methodeTSP.MethodeCheminAleatoire import MethodeCheminAleatoire
 from methodeResolution.methodeTSP.MethodeCheminHillClimbing import MethodeCheminHillClimbing
-from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, griewank, rosenbrock, schwefel, sphere
+from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, FonctionsPSO
 
 
 def testComplet():
@@ -59,10 +59,10 @@ def testComplet():
     print("Essaim:")
     print("Probleme sphere:")
     probleme = ProblemeEssaim(
-        sphere,
+        FonctionsPSO.sphere,
         10,
-        sphere.borneInf,
-        sphere.borneSup,
+        FonctionsPSO.sphere.borneInf,
+        FonctionsPSO.sphere.borneSup,
         Topologie.tousMemeGroupe,
         15,
         0.7,
@@ -72,10 +72,10 @@ def testComplet():
     print(methode.tester(nIterations));
     print("Probleme Griewank:")
     probleme = ProblemeEssaim(
-        griewank,
+        FonctionsPSO.griewank,
         5,
-        griewank.borneInf,
-        griewank.borneSup,
+        FonctionsPSO.griewank.borneInf,
+        FonctionsPSO.griewank.borneSup,
         Topologie.nombreGroupe(5),
         15,
         0.7,
@@ -85,11 +85,11 @@ def testComplet():
     print(methode.tester(nIterations));
     print("Probleme Rosenbrock:")
     probleme = ProblemeEssaim(
-        rosenbrock,
+        FonctionsPSO.rosenbrock,
         5,
-        rosenbrock.borneInf,
-        rosenbrock.borneSup,
-        Topologie.nombreParGroupe(5),
+        FonctionsPSO.rosenbrock.borneInf,
+        FonctionsPSO.rosenbrock.borneSup,
+        Topologie.clustersDeTaille(5),
         15,
         0.7,
         1.47
@@ -98,10 +98,10 @@ def testComplet():
     print(methode.tester(nIterations));
     print("Probleme Schwefel:")
     probleme = ProblemeEssaim(
-        schwefel,
+        FonctionsPSO.schwefel,
         2,
-        schwefel.borneInf,
-        schwefel.borneSup,
+        FonctionsPSO.schwefel.borneInf,
+        FonctionsPSO.schwefel.borneSup,
         Topologie.tousMemeGroupe,
         20,
         0.7,

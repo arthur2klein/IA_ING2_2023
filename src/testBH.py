@@ -1,6 +1,6 @@
 from methodeResolution.MehodePSO import MethodePSO
 from outils.Particule import Particule, EnumBH
-from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, griewank
+from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, FonctionsPSO
 
 
 ###############################################################################
@@ -8,9 +8,9 @@ from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, griewank
 # ┌────────────┬────────────┬────────┬─────────────┬────────────┬───────┐
 # │ Strategie  │ périodique │ rebond │ plus proche │ limitation │ arrêt │  
 # ├────────────┼────────────┼────────┼─────────────┼────────────┼───────┤
-# │ moyenne    │   1.532    │ 1.652  │    1.722    │   2.176    │ 3.215 │  
-# │ mediane    │   1.296    │ 1.290  │    1.358    │   1.750    │ 2.319 │  
-# │ ecart type │   0.989    │ 1.276  │    1.352    │   1.655    │ 3.067 │  
+# │ moyenne    │   1.524    │ 1.681  │    1.678    │   2.200    │ 3.263 │  
+# │ mediane    │   1.226    │ 1.283  │    1.342    │   1.693    │ 2.322 │  
+# │ ecart type │   1.047    │ 1.368  │    1.255    │   1.749    │ 2.933 │  
 # └────────────┴────────────┴────────┴─────────────┴────────────┴───────┘
 ###############################################################################
 def testBH(nEtapes: int):
@@ -24,10 +24,10 @@ def testBH(nEtapes: int):
     print("Espace périodique:")
     Particule.bhMethod = EnumBH.ESPACE_PERIODIQUE;
     probleme = ProblemeEssaim(
-        griewank,
+        FonctionsPSO.griewank,
         10,
-        griewank.borneInf,
-        griewank.borneSup,
+        FonctionsPSO.griewank.borneInf,
+        FonctionsPSO.griewank.borneSup,
         Topologie.tousMemeGroupe,
         20,
         0.7,
@@ -39,10 +39,10 @@ def testBH(nEtapes: int):
     print("Arrêt aux frontières:")
     Particule.bhMethod = EnumBH.ARRET_FRONTIERE;
     probleme = ProblemeEssaim(
-        griewank,
+        FonctionsPSO.griewank,
         10,
-        griewank.borneInf,
-        griewank.borneSup,
+        FonctionsPSO.griewank.borneInf,
+        FonctionsPSO.griewank.borneSup,
         Topologie.tousMemeGroupe,
         20,
         0.7,
@@ -54,10 +54,10 @@ def testBH(nEtapes: int):
     print("Limitation de la vitesse:")
     Particule.bhMethod = EnumBH.LIMITE_VITESSE;
     probleme = ProblemeEssaim(
-        griewank,
+        FonctionsPSO.griewank,
         10,
-        griewank.borneInf,
-        griewank.borneSup,
+        FonctionsPSO.griewank.borneInf,
+        FonctionsPSO.griewank.borneSup,
         Topologie.tousMemeGroupe,
         20,
         0.7,
@@ -69,10 +69,10 @@ def testBH(nEtapes: int):
     print("Rebond aux frontieres:")
     Particule.bhMethod = EnumBH.REBOND_FRONTIERE;
     probleme = ProblemeEssaim(
-        griewank,
+        FonctionsPSO.griewank,
         10,
-        griewank.borneInf,
-        griewank.borneSup,
+        FonctionsPSO.griewank.borneInf,
+        FonctionsPSO.griewank.borneSup,
         Topologie.tousMemeGroupe,
         20,
         0.7,
@@ -84,10 +84,10 @@ def testBH(nEtapes: int):
     print("Plus proche de la frontières:")
     Particule.bhMethod = EnumBH.PLUS_PROCHE_FRONTIERE;
     probleme = ProblemeEssaim(
-        griewank,
+        FonctionsPSO.griewank,
         10,
-        griewank.borneInf,
-        griewank.borneSup,
+        FonctionsPSO.griewank.borneInf,
+        FonctionsPSO.griewank.borneSup,
         Topologie.tousMemeGroupe,
         20,
         0.7,

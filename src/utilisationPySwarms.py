@@ -2,7 +2,7 @@ import pyswarms as ps
 from pyswarms.utils.functions import single_obj as fx
 from methodeResolution.MehodePSO import MethodePSO
 
-from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, rosenbrock
+from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, FonctionsPSO
 
 #pipenv run pip install pyswarms
 def resolutionAvecPySwarms():
@@ -26,10 +26,10 @@ def resolutionAvecPySwarms():
 
     print("Comparaison:")
     probleme = ProblemeEssaim(
-        rosenbrock,
+        FonctionsPSO.rosenbrock,
         10,
-        rosenbrock.borneInf,
-        rosenbrock.borneSup,
+        FonctionsPSO.rosenbrock.borneInf,
+        FonctionsPSO.rosenbrock.borneSup,
         Topologie.roue,
         10,
         0.7,

@@ -1,39 +1,23 @@
 from methodeResolution.MehodePSO import MethodePSO
-from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, schwefel
+from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, FonctionsPSO
 
 
 ###############################################################################
-# 100 tests et 2000 itérations:
-# ┌────────────┬──────┬───────────┬───────────┬───────────┬───────────┬──
-# │ Topology   │ roue │ un groupe │ 2 groupes │ 4 groupes │ 5 groupes │  
-# ├────────────┼──────┼───────────┼───────────┼───────────┼───────────┼──
-# │ moyenne    │ 1131 │    1130   │    1223   │    1436   │    1531   │  
-# │ mediane    │ 1114 │    1115   │    1227   │    1431   │    1556   │  
-# │ ecart type │  355 │     393   │     338   │     297   │     300   │  
-# └────────────┴──────┴───────────┴───────────┴───────────┴───────────┴──
-# ──┬────────────┬─────────────┐
-#   │ 20 groupes │ von neumann |
-# ──┼────────────┼─────────────┤
-#   │    2824    │     792     │
-#   │    2839    │     758     │
-#   │     267    │     316     │
-# ──┴────────────┴─────────────┘
-###############################################################################
-# 1000 tests et 100 itérations:
-# ┌────────────┬──────┬───────────┬───────────┬───────────┬───────────┬──
-# │ Topology   │ roue │ un groupe │ 2 groupes │ 4 groupes │ 5 groupes │  
-# ├────────────┼──────┼───────────┼───────────┼───────────┼───────────┼──
-# │ moyenne    │ 1281 │    1205   │    1237   │    1439   │    1556   │  
-# │ mediane    │ 1300 │    1217   │    1243   │    1454   │    1561   │  
-# │ ecart type │  374 │     380   │     346   │     319   │     315   │  
-# └────────────┴──────┴───────────┴───────────┴───────────┴───────────┴──
-# ──┬────────────┬─────────────┐
-#   │ 20 groupes │ von neumann |
-# ──┼────────────┼─────────────┤
-#   │    2880    │     1115    │
-#   │    2903    │     1135    │
-#   │     278    │      345    │
-# ──┴────────────┴─────────────┘
+# Médianes pour 100 tests et nIter itérations:
+# ┌───────┬──────┬────────┬────────┬───────┬────────┬─────────┐
+# │ nIter │ roue │ 1 × 20 │ 2 × 10 │ 5 × 4 │ cycles │ Neumann |
+# ├───────┼──────┼────────┼────────┼───────┼────────┼─────────┤
+# │    10 │ 2412 │  2274  │  2254  │  2380 │  2436  │   2344  │
+# │    20 │ 2134 │  1831  │  1925  │  2018 │  2111  │   2121  │
+# │    50 │ 1701 │  1395  │  1439  │  1460 │  1586  │   1477  │
+# │   100 │ 1294 │  1329  │  1216  │  1314 │  1258  │   1096  │
+# │   200 │ 1175 │  1205  │  1043  │   986 │   991  │    857  │
+# │   500 │  992 │  1120  │   890  │   855 │   669  │    810  │
+# │  1000 │ 1102 │  1148  │   858  │   720 │   467  │    806  │
+# │  2000 │ 1096 │  1204  │   805  |   849 │   435  │    739  │
+# │  5000 │ 1084 │  1108  │   773  │   786 │   312  │    713  │
+# │ 10000 │      │        │        │       │        │         │
+# └───────┴──────┴────────┴────────┴───────┴────────┴─────────┘
 ###############################################################################
 def testTopologie(nPerTopology: int, nIter: int):
     """Test of the different topologies.
@@ -46,24 +30,24 @@ def testTopologie(nPerTopology: int, nIter: int):
 
     print("Une seule voisine de toutes:")
     probleme = ProblemeEssaim(
-        schwefel,
-        10,
-        schwefel.borneInf,
-        schwefel.borneSup,
-        Topologie.roue,
-        20,
-        0.7,
-        1.47
+        fonction = FonctionsPSO.schwefel,
+        nDimensions = 10,
+        borneInf = FonctionsPSO.schwefel.borneInf,
+        borneSup = FonctionsPSO.schwefel.borneSup,
+        estDansMemeGroupe = Topologie.roue,
+        tailleEssaim = 20,
+        inertie = 0.7,
+        maxConfiance = 1.47
     );
     methode = MethodePSO(probleme, nIter);
     print(methode.tester(nPerTopology));
 
     print("Tous dans un même groupe:")
     probleme = ProblemeEssaim(
-        schwefel,
+        FonctionsPSO.schwefel,
         10,
-        schwefel.borneInf,
-        schwefel.borneSup,
+        FonctionsPSO.schwefel.borneInf,
+        FonctionsPSO.schwefel.borneSup,
         Topologie.tousMemeGroupe,
         20,
         0.7,
@@ -74,25 +58,11 @@ def testTopologie(nPerTopology: int, nIter: int):
 
     print("2 groupes de 10:")
     probleme = ProblemeEssaim(
-        schwefel,
+        FonctionsPSO.schwefel,
         10,
-        schwefel.borneInf,
-        schwefel.borneSup,
-        Topologie.nombreGroupe(2),
-        20,
-        0.7,
-        1.47
-    );
-    methode = MethodePSO(probleme, nIter);
-    print(methode.tester(nPerTopology));
-
-    print("4 groupes de 5:")
-    probleme = ProblemeEssaim(
-        schwefel,
-        10,
-        schwefel.borneInf,
-        schwefel.borneSup,
-        Topologie.nombreGroupe(4),
+        FonctionsPSO.schwefel.borneInf,
+        FonctionsPSO.schwefel.borneSup,
+        Topologie.clustersDeTaille(10),
         20,
         0.7,
         1.47
@@ -102,11 +72,11 @@ def testTopologie(nPerTopology: int, nIter: int):
 
     print("5 groupes de 4:")
     probleme = ProblemeEssaim(
-        schwefel,
+        FonctionsPSO.schwefel,
         10,
-        schwefel.borneInf,
-        schwefel.borneSup,
-        Topologie.nombreGroupe(5),
+        FonctionsPSO.schwefel.borneInf,
+        FonctionsPSO.schwefel.borneSup,
+        Topologie.clustersDeTaille(4),
         20,
         0.7,
         1.47
@@ -114,27 +84,13 @@ def testTopologie(nPerTopology: int, nIter: int):
     methode = MethodePSO(probleme, nIter);
     print(methode.tester(nPerTopology));
 
-    print("10 groupes de 2:")
+    print("Cycle:")
     probleme = ProblemeEssaim(
-        schwefel,
+        FonctionsPSO.schwefel,
         10,
-        schwefel.borneInf,
-        schwefel.borneSup,
-        Topologie.nombreGroupe(10),
-        20,
-        0.7,
-        1.47
-    );
-    methode = MethodePSO(probleme, nIter);
-    print(methode.tester(nPerTopology));
-
-    print("Tous dans différents:")
-    probleme = ProblemeEssaim(
-        schwefel,
-        10,
-        schwefel.borneInf,
-        schwefel.borneSup,
-        Topologie.tousDifferents,
+        FonctionsPSO.schwefel.borneInf,
+        FonctionsPSO.schwefel.borneSup,
+        Topologie.cycle(20),
         20,
         0.7,
         1.47
@@ -144,10 +100,10 @@ def testTopologie(nPerTopology: int, nIter: int):
 
     print("Von Neumann topology:")
     probleme = ProblemeEssaim(
-        schwefel,
+        FonctionsPSO.schwefel,
         10,
-        schwefel.borneInf,
-        schwefel.borneSup,
+        FonctionsPSO.schwefel.borneInf,
+        FonctionsPSO.schwefel.borneSup,
         Topologie.vonNeumann(4, 5),
         20,
         0.7,
