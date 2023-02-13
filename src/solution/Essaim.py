@@ -59,17 +59,17 @@ class Essaim(Solution):
             Essaim: New swarm with the parameters.
         """
         return Essaim(
-            fonction,
-            estDansMemeGroupe,
-            [Particule(
-                    i,
-                    inertie,
-                    maxConfiance,
-                    [random.random() * (borneSup - borneInf) + borneInf
-                    for i in range(nDimensions)],
-                    borneInf,
-                    borneSup
-                ) for i in range(taille)]
+            fonction = fonction,
+            estDansMemeGroupe = estDansMemeGroupe,
+            particules = [Particule(
+                id = i,
+                inertie = inertie,
+                maxConfiance = maxConfiance,
+                position = [random.random() * (borneSup - borneInf) + borneInf
+                for i in range(nDimensions)],
+                borneInf = borneInf,
+                borneSup = borneSup
+            ) for i in range(taille)]
         );
 
     def fromEssaim(essaim: Essaim) -> Essaim:
@@ -82,9 +82,10 @@ class Essaim(Solution):
             Essaim: Copy of the given swarm.
         """
         return Essaim(
-            essaim.fonction,
-            essaim.estDansMemeGroupe,
-            [Particule.fromParticule(x) for x in essaim.particules]
+            fonction = essaim.fonction,
+            estDansMemeGroupe = essaim.estDansMemeGroupe,
+            particules = [Particule.fromParticule(particule = x)
+                          for x in essaim.particules]
         );
     
     def meilleurPos(self) -> list[float]:
@@ -97,7 +98,8 @@ class Essaim(Solution):
         for particule in self.particules:
             if (
                 res == None or
-                self.valeur(particule) < self.valeur(res)
+                self.valeur(particule = particule) <
+                self.valeur(particule = res)
             ):
                 res = particule;
         return res.position;
@@ -111,7 +113,7 @@ class Essaim(Solution):
         """
         res = None;
         for particule in self.particules:
-            valeur = self.valeur(particule);
+            valeur = self.valeur(particule = particule);
             if (res == None or valeur < res):
                 res = valeur;
         return res;
@@ -136,18 +138,18 @@ class Essaim(Solution):
         Returns:
             float: Evaluation of the position of the given particule.
         """
-        return self.valeurPos(particule.position);
+        return self.valeurPos(position = particule.position);
 
     def etape(self):
         """Do a step of speed update and movement.
         """
         for particule in self.particules:
-            particule.majVitesse(self.meilleurGroupe(particule));
+            particule.majVitesse(cible = self.meilleurGroupe(particule));
         for particule in self.particules:
             particule.seDeplacer();
             if (
-                self.valeur(particule) <
-                self.valeurPos(particule.preferee)
+                self.valeur(particule = particule) <
+                self.valeurPos(position = particule.preferee)
             ):
                 particule.majPreferee();
 
@@ -167,8 +169,8 @@ class Essaim(Solution):
             if (not self.estDansMemeGroupe(particule, autre)):
                 continue;
             if (
-                self.valeurPos(autre.preferee) <
-                self.valeurPos(res)
+                self.valeurPos(position = autre.preferee) <
+                self.valeurPos(position = res)
             ):
                 res = autre.preferee[:];
         return res;
@@ -186,6 +188,6 @@ class Essaim(Solution):
             res += "\n\t{} : evaluation = {:0.2E}"\
                 .format(
                     particule.__str__(),
-                    self.valeur(particule)
+                    self.valeur(particule = particule)
                 );
         return res;

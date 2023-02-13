@@ -41,4 +41,4 @@ class MethodeCheminAleatoire(Methode):
         """
         res = self.lPoints[:];
         random.shuffle(res);
-        return Chemin(res);
+        return Chemin(chemin = res);

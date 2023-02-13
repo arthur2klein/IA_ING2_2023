@@ -21,5 +21,5 @@ def lireSac(path: str) -> ProblemeSac:
         if (estPremiereLigne):
             capacite = int(infos[1]);
             estPremiereLigne = False;
-        res += [Objet(int(infos[1]), int(infos[0]))];
-    return ProblemeSac(res, capacite);
+        res += [Objet(masse = int(infos[1]), valeur = int(infos[0]))];
+    return ProblemeSac(lObjets = res, capacite = capacite);

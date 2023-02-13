@@ -38,7 +38,7 @@ class MethodePSO(Methode):
         optimum = self.probleme.candidat();
         res = self.probleme.candidat();
         for i in range(self.nEtapes):
-            res = self.probleme.voisin(res);
+            res = self.probleme.voisin(candidat = res);
             if (res.evaluer() < optimum.evaluer()):
-                optimum = Essaim.fromEssaim(res);
+                optimum = Essaim.fromEssaim(essaim = res);
         return optimum;

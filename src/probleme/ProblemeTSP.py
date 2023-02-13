@@ -23,7 +23,7 @@ class ProblemeTSP(Probleme):
         """
         points = self.lPoints[:];
         random.shuffle(points);
-        return Chemin(points);
+        return Chemin(chemin = points);
 
     def voisin(self, candidat: Chemin) -> Chemin:
         """Create a neighbour of the given path by reversing a randomly chosen
@@ -37,6 +37,6 @@ class ProblemeTSP(Probleme):
         """
         indice1 = random.randrange(len(self.lPoints));
         indice2 = random.randrange(len(self.lPoints));
-        res = Chemin.fromChemin(candidat);
-        res.inverserEntre(indice1, indice2);
+        res = Chemin.fromChemin(chemin = candidat);
+        res.inverserEntre(indice1 = indice1, indice2 = indice2);
         return res;

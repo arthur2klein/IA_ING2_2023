@@ -30,7 +30,7 @@ class Sac(Solution):
         Returns:
             Sac: Empty bag with the given capacity.
         """
-        return Sac(capacite, []);
+        return Sac(capacite = capacite, contenu = []);
 
     def fromSac(sac: Sac) -> Sac:
         """Copy a given bag.
@@ -41,7 +41,7 @@ class Sac(Solution):
         Returns:
             Sac: Copy of the given bag.
         """
-        return Sac(sac.capacite, sac.contenu[:]);
+        return Sac(capacite = sac.capacite, contenu = sac.contenu[:]);
 
     def evaluer(self) -> float:
         """Determine the total value of the content of the bag.
@@ -88,10 +88,10 @@ class Sac(Solution):
         Args:
             objet (Objet): Object to add to or remove from the bag.
         """
-        if (self.contient(objet)):
-            self.retirer(objet);
+        if (self.contient(objet = objet)):
+            self.retirer(objet = objet);
         else:
-            self.ajouter(objet)
+            self.ajouter(objet = objet)
 
     def masseContenu(self) -> int:
         """Total weight of the bag.
@@ -120,7 +120,7 @@ class Sac(Solution):
         while(self.estTropPlein()):
             indice = random.randrange(len(self.contenu));
             objet = self.contenu[indice]
-            self.retirer(objet);
+            self.retirer(objet = objet);
 
     def __str__(self) -> str:
         """Create a string with all the information about the bag.

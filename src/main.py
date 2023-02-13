@@ -1,16 +1,13 @@
-from testBH import testBH
-from testComplet import testComplet
-from utilisationPySwarms import resolutionAvecPySwarms
-from testTopologie import testTopologie
+from executions.testBH import testBH
+from executions.testComplet import testComplet
+from executions.utilisationPySwarms import resolutionAvecPySwarms
+from executions.testTopologie import testTopologie
 
 
 def main():
-    # testComplet();
+    testComplet();
     # resolutionAvecPySwarms();
-    # testBH(1_000);
-    # for i in (10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000):
-    #     print("Après {} étapes:".format(i));
-    #     testTopologie(100, i);
-    testTopologie(100, 10000);
+    # testBH(nEtapes = 10);
+    # testTopologie(nPerTopology = 10, nIter = 100);
     
 main();

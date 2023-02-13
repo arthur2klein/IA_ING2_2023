@@ -15,5 +15,9 @@ def lireTSP(path: str) -> ProblemeTSP:
    """
     res = [];
     for infos in lire(path):
-            res += [Point(infos[0], float(infos[1]), float(infos[2]))];
-    return ProblemeTSP(res);
+          res += [Point(
+               nom = infos[0],
+               x = float(infos[1]),
+               y = float(infos[2])
+          )];
+    return ProblemeTSP(lPoints = res);

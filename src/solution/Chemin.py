@@ -24,7 +24,7 @@ class Chemin(Solution):
         Returns:
             Chemin: Copy of the path.
         """
-        res = Chemin(chemin.points[:]);
+        res = Chemin(chemin = chemin.points[:]);
         return res;
 
     def addPoint(self, point: Point):
@@ -55,7 +55,7 @@ class Chemin(Solution):
             indice2 (int): Second index.
         """
         for i in range(indice1, int((indice1 + indice2) / 2)):
-            self.inverser(indice1, indice2);
+            self.inverser(indice1 = indice1, indice2 = indice2);
 
     def inverser(
         self,
@@ -91,5 +91,5 @@ class Chemin(Solution):
         """
         res = 0.;
         for i in range(1, len(self.points)):
-            res += self.points[i - 1].distance(self.points[i]);
-        return res + self.points[0].distance(self.points[-1]);
+            res += self.points[i - 1].distance(other = self.points[i]);
+        return res + self.points[0].distance(other = self.points[-1]);

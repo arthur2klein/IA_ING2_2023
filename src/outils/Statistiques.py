@@ -55,7 +55,7 @@ class Statistiques:
         Returns:
             float: Median of the data of the instance.
         """
-        return self.percentile(0.5);
+        return self.percentile(position = 0.5);
 
     def moyenne(self) -> float:
         """Calculate the mean of the data of the instance.

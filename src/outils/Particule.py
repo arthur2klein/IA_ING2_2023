@@ -68,12 +68,12 @@ class Particule:
             Particule: Copy of the given particule.
         """
         return Particule(
-            particule.id,
-            particule.inertie,
-            particule.maxConfiance,
-            particule.position[:],
-            particule.borneInf,
-            particule.borneSup
+            id = particule.id,
+            inertie = particule.inertie,
+            maxConfiance = particule.maxConfiance,
+            position = particule.position[:],
+            borneInf = particule.borneInf,
+            borneSup = particule.borneSup
         );
 
     def majVitesse(self, cible: list[float]):
@@ -167,7 +167,7 @@ class Particule:
         """Limit the speed of the particule to try to keep it in the reasearch
         space.
         """
-        n = norme(self.vitesse);
+        n = norme(liste = self.vitesse);
         if (n > self.limVitesse):
             coef = self.limVitesse / n;
             self.vitesse = [v * coef for v in self.vitesse];
@@ -266,11 +266,10 @@ class Particule:
             str: String containing the informations (id, position and norm of
             the speed) of the current particule.
         """
-        return "Particule d'id {} en position {} avec une vitesse {:0.2E}"\
+        return "Particule d'id {} en position {}"\
             .format(
                 self.id,
-                ["{0:0.2E}".format(pos) for pos in self.position],
-                norme(self.vitesse)
+                ["{0:0.2E}".format(pos) for pos in self.position]
             );
 
 

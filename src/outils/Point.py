@@ -5,7 +5,12 @@ import math
 class Point:
     """Point in a two-dimensional space.
     """
-    def __init__(self, nom: str, x: float, y: float):
+    def __init__(
+        self,
+        nom: str,
+        x: float,
+        y: float
+    ):
         """Create a point in a two-dimensional space.
 
         Args:

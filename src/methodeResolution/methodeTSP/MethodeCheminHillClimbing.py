@@ -30,9 +30,9 @@ class MethodeCheminHillClimbing(Methode):
             Chemin: Best of √(#(lpoints)) path found using the Hill Climbing
             method.
         """
-        res = candidat(self.lPoints);
+        res = candidat(lPoints = self.lPoints);
         for i in range (int(math.sqrt(len(self.lPoints)))):
-            newCandidat = candidat(self.lPoints);
+            newCandidat = candidat(lPoints = self.lPoints);
             if (newCandidat.evaluer() < res.evaluer()):
                 res = newCandidat;
         return res;
@@ -51,18 +51,18 @@ def candidat(lPoints: list[Point]) -> Chemin:
     """
     res = Chemin([]);
     restants = lPoints.copy();
-    indice = random.randint(0, len(restants) - 1);
+    indice = random.randint(a = 0, b = len(restants) - 1);
     pointChoisi = restants[indice];
-    res.addPoint(pointChoisi);
+    res.addPoint(point = pointChoisi);
     restants.pop(indice);
     while restants:
         closest = restants[0];
         for p in restants:
             if (
-                p.distance(res.getDernier()) <
-                closest.distance(res.getDernier())
+                p.distance(other = res.getDernier()) <
+                closest.distance(other = res.getDernier())
             ):
                 closest = p;
-        res.addPoint(closest);
+        res.addPoint(point = closest);
         restants.remove(closest);
     return res;

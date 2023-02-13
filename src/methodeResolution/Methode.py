@@ -30,5 +30,5 @@ class Methode:
         """
         res = Statistiques();
         for i in range(nIterations):
-            res.ajouter(self.resoudre().evaluer());
+            res.ajouter(valeur = self.resoudre().evaluer());
         return res;

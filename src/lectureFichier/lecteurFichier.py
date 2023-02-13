@@ -14,7 +14,7 @@ def lire(path: str) -> Generator[list[str], None, None]:
     with open(path, "r") as fichier:
         line = fichier.readline();
         while line:
-            infos = line.split(" ");
+            infos = line.split(sep = " ");
             yield infos;
             line = fichier.readline();
     fichier.close();

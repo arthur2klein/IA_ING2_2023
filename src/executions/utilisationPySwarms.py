@@ -1,8 +1,9 @@
 import pyswarms as ps
 from pyswarms.utils.functions import single_obj as fx
 from methodeResolution.MehodePSO import MethodePSO
-
-from probleme.ProblemeEssaim import ProblemeEssaim, Topologie, FonctionsPSO
+from outils.FonctionsPSO import FonctionsPSO
+from outils.Topologies import Topologie
+from probleme.ProblemeEssaim import ProblemeEssaim
 
 #pipenv run pip install pyswarms
 def resolutionAvecPySwarms():
@@ -21,21 +22,21 @@ def resolutionAvecPySwarms():
         ftol = 1e-8
     );
     best_cost, best_pos = optimizer_10particules\
-        .optimize(fx.rosenbrock, iters = 1000);
+        .optimize(objective_func = fx.rosenbrock, iters = 1000);
     print("best_cost: {}\nbest_pos: {}".format(best_cost, best_pos));
 
     print("Comparaison:")
     probleme = ProblemeEssaim(
-        FonctionsPSO.rosenbrock,
-        10,
-        FonctionsPSO.rosenbrock.borneInf,
-        FonctionsPSO.rosenbrock.borneSup,
-        Topologie.roue,
-        10,
-        0.7,
-        1.47
+        fonction = FonctionsPSO.rosenbrock,
+        nDimensions = 10,
+        borneInf = FonctionsPSO.rosenbrock.borneInf,
+        borneSup = FonctionsPSO.rosenbrock.borneSup,
+        estDansMemeGroupe = Topologie.roue,
+        tailleEssaim = 10,
+        inertie = 0.7,
+        maxConfiance = 1.47
     );
-    methode = MethodePSO(probleme, 1000);
+    methode = MethodePSO(probleme = probleme, nEtapes = 1000);
     solution = methode.resoudre();
     best_cost, best_pos = solution.evaluer(), solution.meilleurPos();
     print(

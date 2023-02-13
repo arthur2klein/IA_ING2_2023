@@ -27,7 +27,7 @@ class ProblemeSac(Probleme):
         Returns:
             Sac: Empy bag with the correct capacity.
         """
-        return Sac.fromCapacite(self.capacite);
+        return Sac.fromCapacite(capacite = self.capacite);
 
     def voisin(self, candidat: Sac) -> Sac:
         """Create a neighbour of the given bag.
@@ -41,8 +41,8 @@ class ProblemeSac(Probleme):
             Sac: Neighbour of the given bag.
         """
         indice = random.randrange(len(self.lObjets));
-        res = Sac.fromSac(candidat);
-        res.ajouter(self.lObjets[indice]);
+        res = Sac.fromSac(sac = candidat);
+        res.ajouter(objet = self.lObjets[indice]);
         res.fixer();
         return res;
 

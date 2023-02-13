@@ -41,7 +41,7 @@ class MethodeLAHCMax(Methode):
         valeurMax = valeurCandidat;
         tabMemoire = [valeurMax for i in range(self.tailleMem)];
         for n in range(1, self.nIter):
-            voisin = self.probleme.voisin(candidat);
+            voisin = self.probleme.voisin(candidat = candidat);
             valMem = tabMemoire[n % self.tailleMem];
             if (valMem <= voisin.evaluer()):
                 candidat = voisin;
