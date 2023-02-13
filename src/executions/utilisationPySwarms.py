@@ -23,7 +23,7 @@ def resolutionAvecPySwarms():
     );
     best_cost, best_pos = optimizer_10particules\
         .optimize(objective_func = fx.rosenbrock, iters = 1000);
-    print("best_cost: {}\nbest_pos: {}".format(best_cost, best_pos));
+    print(f"best_cost: {best_cost}\nbest_pos: {best_pos}");
 
     print("Comparaison:")
     probleme = ProblemeEssaim(
