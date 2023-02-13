@@ -130,5 +130,5 @@ class Sac(Solution):
         """
         res = "Sac:";
         for objet in self.contenu:
-            res += "\n\t{}".format(objet);
+            res += f"\n\t{object}";
         return res;

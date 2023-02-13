@@ -187,7 +187,7 @@ class Essaim(Solution):
         for particule in self.particules:
             res += "\n\t{} : evaluation = {:0.2E}"\
                 .format(
-                    particule.__str__(),
+                    particule,
                     self.valeur(particule = particule)
                 );
         return res;

@@ -96,15 +96,9 @@ class Statistiques:
             str: String containing most of the statistics about the data of the
             instance.
         """
-        return "Statistiques : \n \
-               min = {}\n\
-               \tmax = {}\n\
-               \tmoyenne = {}\n\
-               \tmediane = {}\n\
-               \tecart type = {}"\
-               .format(self.min(),
-                       self.max(),
-                       self.moyenne(),
-                       self.mediane(),
-                       self.ecartType()
-                    );
+        return f'Statistiques : \n\
+            mediane = {self.mediane()}\n\
+            \tmoyenne = {self.moyenne()}\n\
+            \tmin = {self.min()}\n\
+            \tmax = {self.max()}\n\
+            \tecart type = {self.ecartType()}';

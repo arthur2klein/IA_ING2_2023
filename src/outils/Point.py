@@ -42,9 +42,4 @@ class Point:
         Returns:
             str: String containing all the informations of the point.
         """
-        return "Point {}: {} ; {}"\
-            .format(
-                self.nom,
-                self.x,
-                self.y
-            );
+        return f'Point {self.nom}: {self.x} ; {self.y}';

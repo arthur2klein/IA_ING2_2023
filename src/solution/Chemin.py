@@ -80,7 +80,7 @@ class Chemin(Solution):
         """
         res = "";
         for i in range (len(self.points)):
-            res += self.points[i].nom + ";";
+            res += f'{self.points[i].nom};';
         return res;
         
     def evaluer(self) -> float:

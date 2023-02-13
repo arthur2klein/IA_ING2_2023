@@ -12,9 +12,9 @@ def lire(path: str) -> Generator[list[str], None, None]:
         and containing lists of words.
     """
     with open(path, "r") as fichier:
-        line = fichier.readline();
+        line: str = fichier.readline();
         while line:
-            infos = line.split(sep = " ");
+            infos: list[str] = line.split(sep = " ");
             yield infos;
             line = fichier.readline();
     fichier.close();
