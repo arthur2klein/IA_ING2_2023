@@ -5,9 +5,9 @@ from executions.testTopologie import testTopologie
 
 
 def main():
-    testComplet();
+    # testComplet();
     # resolutionAvecPySwarms();
     # testBH(nEtapes = 10);
-    # testTopologie(nPerTopology = 10, nIter = 100);
+    testTopologie(nPerTopology = 100, nIter = 500);
     
 main();
