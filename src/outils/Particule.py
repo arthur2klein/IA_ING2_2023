@@ -266,12 +266,10 @@ class Particule:
             str: String containing the informations (id, position and norm of
             the speed) of the current particule.
         """
-        return "Particule d'id {} en position {}"\
-            .format(
-                self.id,
-                ["{0:0.2E}".format(pos) for pos in self.position]
-            );
-
+        res = f'Particule d\'id {self.id:3} avec position =';
+        for pos in self.position:
+            res += f'\n\t{pos:>+12.5E}'
+        return res;
 
 def norme(liste: list[float]) -> float:
     """Calculate the norm of the given values.

@@ -128,7 +128,7 @@ class Sac(Solution):
         Returns:
             str: String containing all the information about the bag.
         """
-        res = "Sac:";
+        res = 'Sac:';
         for objet in self.contenu:
-            res += f"\n\t{object}";
+            res += f'\n\t{objet}';
         return res;

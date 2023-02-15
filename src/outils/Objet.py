@@ -29,4 +29,4 @@ class Objet:
         Returns:
             str: String containing all the informations of the objects.
         """
-        return f'Objet de masse {self.masse} et de valeur {self.valeur}';
+        return f'Objet de masse {self.masse:9,} et de valeur {self.valeur:9,}.';

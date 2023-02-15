@@ -71,18 +71,7 @@ class Chemin(Solution):
         temp = self.points[indice1];
         self.points[indice1] = self.points[indice2];
         self.points[indice2] = temp;
-
-    def __str__(self) -> str:
-        """Create a string with all the information about the path.
-
-        Returns:
-            str: String containing all the information about the path.
-        """
-        res = "";
-        for i in range (len(self.points)):
-            res += f'{self.points[i].nom};';
-        return res;
-        
+    
     def evaluer(self) -> float:
         """Determine the total length of the path.
 
@@ -93,3 +82,14 @@ class Chemin(Solution):
         for i in range(1, len(self.points)):
             res += self.points[i - 1].distance(other = self.points[i]);
         return res + self.points[0].distance(other = self.points[-1]);
+
+    def __str__(self) -> str:
+        """Create a string with all the information about the path.
+
+        Returns:
+            str: String containing all the information about the path.
+        """
+        res = "Chemin: ";
+        for i in range (len(self.points)):
+            res += f'⟶{self.points[i].nom:^6}';
+        return res;

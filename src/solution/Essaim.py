@@ -19,7 +19,7 @@ class Essaim(Solution):
         Args:
             fonction (Callable[[list[float]], float]): Function that the swarm
             will try to minimize.
-            estDansMemeGroupe (Callable[[Particule, Particule], bool]): _description_
+            estDansMemeGroupe (Callable[[Particule, Particule], bool]):
             Function that determine wheter of not two particules are in a same
             group.
             particules (list[Particule]): Particules of the swarm.
@@ -88,11 +88,11 @@ class Essaim(Solution):
                           for x in essaim.particules]
         );
     
-    def meilleurPos(self) -> list[float]:
-        """Determine the best position occupated by the swarm.
+    def meilleurParticule(self) -> Particule:
+        """Determine the best particule of the swarm.
 
         Returns:
-            list[float]: Best position occupated by the swarm.
+            Particule: Best particule of the swarm.
         """
         res = None;
         for particule in self.particules:
@@ -102,7 +102,15 @@ class Essaim(Solution):
                 self.valeur(particule = res)
             ):
                 res = particule;
-        return res.position;
+        return res;
+        
+    def meilleurPos(self) -> list[float]:
+        """Determine the best position occupated by the swarm.
+
+        Returns:
+            list[float]: Best position occupated by the swarm.
+        """
+        return self.meilleurParticule().position;
         
     def evaluer(self) -> float:
         """Determine the evaluation of the best position occupated by the
@@ -183,11 +191,8 @@ class Essaim(Solution):
             str: String containing most of the information about the particule
             of the current swarm.
         """
-        res = "Essaim:";
-        for particule in self.particules:
-            res += "\n\t{} : evaluation = {:0.2E}"\
-                .format(
-                    particule,
-                    self.valeur(particule = particule)
-                );
-        return res;
+        return (
+            f'Essaim:'
+            f'\nMeilleure particule: {self.meilleurParticule()}'
+            f'\nEvaluation: {self.evaluer():> 12,.5E}'
+        );
