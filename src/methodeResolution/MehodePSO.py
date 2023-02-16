@@ -35,10 +35,11 @@ class MethodePSO(Methode):
         Returns:
             Essaim: Swarm that found the best position.
         """
-        optimum = self.probleme.candidat();
-        res = self.probleme.candidat();
-        for i in range(self.nEtapes):
-            res = self.probleme.voisin(candidat = res);
-            if (res.evaluer() < optimum.evaluer()):
-                optimum = Essaim.fromEssaim(essaim = res);
-        return optimum;
+        essaim = None;
+        return min(
+            (
+                self.probleme.voisin(candidat = essaim)
+                for _ in range(self.nEtapes + 1)
+            ),
+            key = lambda x: x.evaluer()
+        );

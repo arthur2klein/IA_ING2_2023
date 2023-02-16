@@ -53,7 +53,7 @@ class MethodeRecuit(Methode):
         minEval = evaluation;
         temperature = self.tempInitiale;
         while (temperature > self.tempMin):
-            for i in range(self.iterationsParTemp):
+            for _ in range(self.iterationsParTemp):
                 voisin = self.probleme.voisin(candidat = solution);
                 delta = voisin.evaluer() - evaluation;
                 if (

@@ -54,7 +54,7 @@ class Chemin(Solution):
             indice1 (int): First index.
             indice2 (int): Second index.
         """
-        for i in range(indice1, int((indice1 + indice2) / 2)):
+        for _ in range(indice1, int((indice1 + indice2) / 2)):
             self.inverser(indice1 = indice1, indice2 = indice2);
 
     def inverser(
@@ -78,10 +78,10 @@ class Chemin(Solution):
         Returns:
             float: Total length of the path.
         """
-        res = 0.;
-        for i in range(1, len(self.points)):
-            res += self.points[i - 1].distance(other = self.points[i]);
-        return res + self.points[0].distance(other = self.points[-1]);
+        return sum(
+            self.points[i].distance(other = self.points[i + 1])
+            for i in range(len(self.points) - 1)
+        ) + self.points[0].distance(other = self.points[-1]);
 
     def __str__(self) -> str:
         """Create a string with all the information about the path.
@@ -89,7 +89,4 @@ class Chemin(Solution):
         Returns:
             str: String containing all the information about the path.
         """
-        res = "Chemin: ";
-        for i in range (len(self.points)):
-            res += f'⟶{self.points[i].nom:^6}';
-        return res;
+        return  "Chemin: " + "".join(f'⟶{p.nom:^6}' for p in self.points);

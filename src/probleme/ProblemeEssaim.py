@@ -75,5 +75,7 @@ class ProblemeEssaim(Probleme):
         Returns:
             Essaim: Same swarm as in parameter.
         """
+        if (candidat == None):
+            return self.candidat();
         candidat.etape();
         return candidat;

@@ -22,16 +22,13 @@ class MethodeCheminAleatoire(Methode):
         Returns:
             Chemin: Best of the 1000⋅#(lpoints) path randomly created.
         """
-        nbIter = 1000 * len(self.lPoints);
-        optimum = self.genererChemin();
-        distanceOptimale = optimum.evaluer();
-        for i in range(nbIter - 1):
-            nouveauChemin = self.genererChemin();
-            nouvelleLongueur = nouveauChemin.evaluer();
-            if (nouvelleLongueur < distanceOptimale):
-                distanceOptimale = nouvelleLongueur;
-                optimum = nouveauChemin;
-        return optimum;
+        return min(
+            (
+                self.genererChemin()
+                for _ in range(1000 * len(self.lPoints))
+            ),
+            key = lambda x: x.evaluer()
+        );
 
     def genererChemin(self) -> Chemin:
         """Create a random path going through each of the points only once.

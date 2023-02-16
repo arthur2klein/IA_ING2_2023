@@ -13,11 +13,9 @@ def lireTSP(path: str) -> ProblemeTSP:
    Returns:
         ProblemeTSP: TSP corresponding to the points of the file
    """
-    res = [];
-    for infos in lire(path):
-          res += [Point(
-               nom = infos[0],
-               x = float(infos[1]),
-               y = float(infos[2])
-          )];
-    return ProblemeTSP(lPoints = res);
+    return ProblemeTSP(
+          lPoints = [
+              Point(nom = infos[0], x = float(infos[1]), y = float(infos[2]))
+              for infos in lire(path)
+          ]
+     );

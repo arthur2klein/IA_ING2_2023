@@ -40,9 +40,6 @@ def resolutionAvecPySwarms():
     solution = methode.resoudre();
     best_cost, best_pos = solution.evaluer(), solution.meilleurPos();
     print(
-        "best_cost: {:0.5f}\nbest_pos: {}"\
-            .format(
-                best_cost,
-                ["{:0.5f}".format(x) for x in best_pos]
-            )
+        f'best_cost: {best_cost:0.5f}'
+        f'\nbest_pos: {[f"{x:0.5f}" for x in best_pos]}'
     );

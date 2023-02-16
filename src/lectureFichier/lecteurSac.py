@@ -15,11 +15,12 @@ def lireSac(path: str) -> ProblemeSac:
         ProblemeSac: Knoapsack problem corresponding to the given capacity and
         list of Objet.
     """
-    res = [];
-    estPremiereLigne = True;
-    for infos in lire(path):
-        if (estPremiereLigne):
-            capacite = int(infos[1]);
-            estPremiereLigne = False;
-        res += [Objet(masse = int(infos[1]), valeur = int(infos[0]))];
-    return ProblemeSac(lObjets = res, capacite = capacite);
+    lecture = lire(path);
+    capacite = int(next(lecture)[1]);
+    return ProblemeSac(
+        lObjets = [
+            Objet(masse = int(infos[1]), valeur = int(infos[0]))
+            for infos in lecture
+        ],
+        capacite = capacite
+    );

@@ -40,6 +40,8 @@ class ProblemeSac(Probleme):
         Returns:
             Sac: Neighbour of the given bag.
         """
+        if (candidat == None):
+            return self.candidat();
         indice = random.randrange(len(self.lObjets));
         res = Sac.fromSac(sac = candidat);
         res.ajouter(objet = self.lObjets[indice]);

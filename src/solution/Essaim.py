@@ -65,8 +65,10 @@ class Essaim(Solution):
                 id = i,
                 inertie = inertie,
                 maxConfiance = maxConfiance,
-                position = [random.random() * (borneSup - borneInf) + borneInf
-                for i in range(nDimensions)],
+                position = [
+                    random.random() * (borneSup - borneInf) + borneInf
+                    for _ in range(nDimensions)
+                ],
                 borneInf = borneInf,
                 borneSup = borneSup
             ) for i in range(taille)]
@@ -87,6 +89,19 @@ class Essaim(Solution):
             particules = [Particule.fromParticule(particule = x)
                           for x in essaim.particules]
         );
+
+    def etape(self):
+        """Do a step of speed update and movement.
+        """
+        for particule in self.particules:
+            particule.majVitesse(cible = self.meilleurGroupe(particule));
+        for particule in self.particules:
+            particule.seDeplacer();
+            if (
+                self.valeur(particule = particule) <
+                self.valeurPos(position = particule.preferee)
+            ):
+                particule.majPreferee();
     
     def meilleurParticule(self) -> Particule:
         """Determine the best particule of the swarm.
@@ -94,15 +109,33 @@ class Essaim(Solution):
         Returns:
             Particule: Best particule of the swarm.
         """
-        res = None;
-        for particule in self.particules:
-            if (
-                res == None or
-                self.valeur(particule = particule) <
-                self.valeur(particule = res)
-            ):
-                res = particule;
-        return res;
+        return min(
+            (
+                particule
+                for particule in self.particules
+            ),
+            key = lambda x: self.valeur(x)
+        );
+
+    def meilleurGroupe(self, particule: Particule) -> list[float]:
+        """Determine the position of the particule of the group of a given
+        particule that has the best evaluation.
+
+        Args:
+            particule (Particule): Particule from which the best particule of
+            the group will be determined.
+
+        Returns:
+            list[float]: Best position of the group.
+        """
+        return min(
+            (
+                p.preferee
+                for p in self.particules
+                if self.estDansMemeGroupe(particule, p)
+            ),
+            key = lambda x: self.valeurPos(position = x)
+        );
         
     def meilleurPos(self) -> list[float]:
         """Determine the best position occupated by the swarm.
@@ -119,12 +152,10 @@ class Essaim(Solution):
         Returns:
             float: Evaluation of the best position occupated by the swarm.
         """
-        res = None;
-        for particule in self.particules:
-            valeur = self.valeur(particule = particule);
-            if (res == None or valeur < res):
-                res = valeur;
-        return res;
+        return min(
+            self.valeur(particule)
+            for particule in self.particules
+        );
 
     def valeurPos(self, position: list[float]) -> float:
         """Determine the evaluation of a given position.
@@ -147,41 +178,6 @@ class Essaim(Solution):
             float: Evaluation of the position of the given particule.
         """
         return self.valeurPos(position = particule.position);
-
-    def etape(self):
-        """Do a step of speed update and movement.
-        """
-        for particule in self.particules:
-            particule.majVitesse(cible = self.meilleurGroupe(particule));
-        for particule in self.particules:
-            particule.seDeplacer();
-            if (
-                self.valeur(particule = particule) <
-                self.valeurPos(position = particule.preferee)
-            ):
-                particule.majPreferee();
-
-    def meilleurGroupe(self, particule: Particule) -> list[float]:
-        """Determine the position of the particule of the group of a given
-        particule that has the best evaluation.
-
-        Args:
-            particule (Particule): Particule from which the best particule of
-            the group will be determined.
-
-        Returns:
-            list[float]: Best position of the group.
-        """
-        res = particule.preferee;
-        for autre in self.particules:
-            if (not self.estDansMemeGroupe(particule, autre)):
-                continue;
-            if (
-                self.valeurPos(position = autre.preferee) <
-                self.valeurPos(position = res)
-            ):
-                res = autre.preferee[:];
-        return res;
 
     def __str__(self) -> str:
         """Print most of the information about the particules of the current

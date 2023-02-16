@@ -29,6 +29,6 @@ class Methode:
             Statistiques: Statistics of all the results of the resolutions.
         """
         res = Statistiques();
-        for i in range(nIterations):
+        for _ in range(nIterations):
             res.ajouter(valeur = self.resoudre().evaluer());
         return res;

@@ -49,10 +49,7 @@ class Sac(Solution):
         Returns:
             float: Sum of the values of the items in the bag.
         """
-        res = 0.;
-        for objet in self.contenu:
-            res += objet.valeur;
-        return res;
+        return sum(objet.valeur for objet in self.contenu);
 
     def ajouter(self, objet: Objet):
         """Add an item to the bag.
@@ -99,10 +96,7 @@ class Sac(Solution):
         Returns:
             int: Sum of the weights of the items contained in the bag.
         """
-        res = 0;
-        for objet in self.contenu:
-            res += objet.masse;
-        return res;
+        return sum(objet.masse for objet in self.contenu);
 
     def estTropPlein(self) -> bool:
         """Determine wether the bag is overweighted.
@@ -128,7 +122,4 @@ class Sac(Solution):
         Returns:
             str: String containing all the information about the bag.
         """
-        res = 'Sac:';
-        for objet in self.contenu:
-            res += f'\n\t{objet}';
-        return res;
+        return 'Sac:' + "".join(f'\n\t{objet}' for objet in self.contenu);

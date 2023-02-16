@@ -12,10 +12,7 @@ class FonctionsPSO:
         Returns:
             float: Image of the given antecedent by the sphere function.
         """
-        res: float = 0.;
-        for x in position:
-            res += x * x;
-        return res;
+        return sum(x * x for x in position);
 
     sphere.borneInf = -5.12;
     sphere.borneSup = 5.12;
@@ -30,10 +27,10 @@ class FonctionsPSO:
         Returns:
             float: Image of the given antecedent by the schwefel function.
         """
-        res: float = 0.;
-        for x in position:
-            res += x * math.sin(math.sqrt(math.fabs(x)));
-        return 418.9829 * len(position) - res;
+        return 418.9829 * len(position) - sum(
+            x * math.sin(math.sqrt(math.fabs(x)))
+            for x in position
+        );
 
     schwefel.borneInf = -500;
     schwefel.borneSup = 500;
@@ -48,14 +45,13 @@ class FonctionsPSO:
         Returns:
             float: Image of the given antecedent by the rosenbrock function.
         """
-        res: float = 0.;
-        for i in range(len(position) - 1):
-            xi = position[i];
-            xip1 = position[i + 1];
+        def terme(indice: int):
+            xi = position[indice];
+            xip1 = position[indice + 1];
             m1 = (xip1 - xi * xi);
             m2 = xi - 1;
-            res += 100 * m1 * m1 + m2 * m2;
-        return res;
+            return 100 * m1 * m1 + m2 * m2;
+        return sum(terme(i) for i in range(len(position) - 1));
 
     rosenbrock.borneInf = -2.048;
     rosenbrock.borneSup = 2.048;
@@ -73,9 +69,7 @@ class FonctionsPSO:
         res: float = 1.;
         for i in range(len(position)):
             res *= math.cos(position[i] / math.sqrt(i + 1));
-        for x in position:
-            res += x * x / 4000.;
-        return res + 1.;
+        return res + sum(x * x for x in position) /4000. + 1.;
 
     griewank.borneInf = -600;
     griewank.borneSup = 600;

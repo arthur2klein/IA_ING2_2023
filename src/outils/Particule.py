@@ -252,9 +252,7 @@ class Particule:
             zone.
         """
         for x in self.position:
-            if x > self.borneSup:
-                return False;
-            if x < self.borneInf:
+            if x > self.borneSup or x < self.borneInf:
                 return False;
         return True;
 
@@ -266,10 +264,8 @@ class Particule:
             str: String containing the informations (id, position and norm of
             the speed) of the current particule.
         """
-        res = f'Particule d\'id {self.id:3} avec position =';
-        for pos in self.position:
-            res += f'\n\t{pos:>+12.5E}'
-        return res;
+        return f'Particule d\'id {self.id:3} avec position =' +\
+               "".join(f'\n\t{pos:>+12.5E}' for pos in self.position);
 
 def norme(liste: list[float]) -> float:
     """Calculate the norm of the given values.
@@ -280,7 +276,4 @@ def norme(liste: list[float]) -> float:
     Returns:
         float: Norm of the values of the given list.
     """
-    res = 0.;
-    for x in liste:
-        res += x * x;
-    return math.sqrt(res);
+    return math.sqrt(sum(x * x for x in liste));

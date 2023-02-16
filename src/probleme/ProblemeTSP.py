@@ -35,6 +35,8 @@ class ProblemeTSP(Probleme):
         Returns:
             Chemin: Neighbour of the given path.
         """
+        if (candidat == None):
+            return self.candidat();
         indice1 = random.randrange(len(self.lPoints));
         indice2 = random.randrange(len(self.lPoints));
         res = Chemin.fromChemin(chemin = candidat);

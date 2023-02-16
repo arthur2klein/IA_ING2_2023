@@ -63,10 +63,7 @@ class Statistiques:
         Returns:
             float: Mean of the data of the instance.
         """
-        res = 0.;
-        for valeur in self.lValeurs:
-            res += valeur;
-        return res / len(self.lValeurs);
+        return sum(self.lValeurs) / len(self.lValeurs);
 
     def variance(self) -> float:
         """Calculate the variance of the data of the instance.
@@ -74,11 +71,10 @@ class Statistiques:
         Returns:
             float: Variance of the data of the instance.
         """
-        res = 0.;
-        for valeur in self.lValeurs:
-            res += valeur * valeur;
-        moyenne = self.moyenne;
-        return res / len(self.lValeurs) - moyenne() * moyenne();
+        moyenne = self.moyenne();
+        return sum(
+            valeur * valeur for valeur in self.lValeurs
+        ) / len(self.lValeurs) - moyenne * moyenne;
 
     def ecartType(self) -> float:
         """Calculate the standard deviation of the data of the instance.
