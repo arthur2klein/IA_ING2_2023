@@ -17,9 +17,7 @@ class MethodeSacTri(Methode):
         self.trier(objets)
         sac = self.probleme.candidat();
         for objet in objets:
-            sac.ajouter(objet = objet);
-            if (sac.estTropPlein()):
-                sac.retirer(objet = objet);
+            sac.ajouterSiPossible(objet = objet);
         return sac;
     
     def trier(self, objets: list[Objet]):

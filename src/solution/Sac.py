@@ -71,6 +71,16 @@ class Sac(Solution):
         else:
             self.ajouter(objet = objet)
 
+    def ajouterSiPossible(self, objet: Objet):
+        """Add the given object to the bag if it does not overweight the bag.
+
+        Args:
+            objet (Objet): Object to add to the bag.
+        """
+        self.ajouter(objet);
+        if (self.estTropPlein()):
+            self.retirer(objet);
+
     def contient(self, objet: Objet) -> bool:
         """Determine wheter the current bag contains a given object.
 
