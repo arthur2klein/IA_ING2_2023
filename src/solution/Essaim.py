@@ -144,18 +144,6 @@ class Essaim(Solution):
             list[float]: Best position occupated by the swarm.
         """
         return self.meilleurParticule().position;
-        
-    def evaluer(self) -> float:
-        """Determine the evaluation of the best position occupated by the
-        swarm.
-
-        Returns:
-            float: Evaluation of the best position occupated by the swarm.
-        """
-        return min(
-            self.valeur(particule)
-            for particule in self.particules
-        );
 
     def valeurPos(self, position: list[float]) -> float:
         """Determine the evaluation of a given position.
@@ -178,6 +166,18 @@ class Essaim(Solution):
             float: Evaluation of the position of the given particule.
         """
         return self.valeurPos(position = particule.position);
+        
+    def evaluer(self) -> float:
+        """Determine the evaluation of the best position occupated by the
+        swarm.
+
+        Returns:
+            float: Evaluation of the best position occupated by the swarm.
+        """
+        return min(
+            self.valeur(particule)
+            for particule in self.particules
+        );
 
     def __str__(self) -> str:
         """Print most of the information about the particules of the current

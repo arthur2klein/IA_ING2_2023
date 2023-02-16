@@ -43,14 +43,6 @@ class Sac(Solution):
         """
         return Sac(capacite = sac.capacite, contenu = sac.contenu[:]);
 
-    def evaluer(self) -> float:
-        """Determine the total value of the content of the bag.
-
-        Returns:
-            float: Sum of the values of the items in the bag.
-        """
-        return sum(objet.valeur for objet in self.contenu);
-
     def ajouter(self, objet: Objet):
         """Add an item to the bag.
 
@@ -67,17 +59,6 @@ class Sac(Solution):
         """
         self.contenu.remove(objet);
 
-    def contient(self, objet: Objet) -> bool:
-        """Determine wheter the current bag contains a given object.
-
-        Args:
-            objet (Objet): Object to search in the bag.
-
-        Returns:
-            bool: True iff the bag contains the given object.
-        """
-        return objet in self.contenu;
-
     def toggle(self, objet: Objet):
         """Add the given object to the bag or removes it if it is already in
         the bag.
@@ -89,6 +70,25 @@ class Sac(Solution):
             self.retirer(objet = objet);
         else:
             self.ajouter(objet = objet)
+
+    def contient(self, objet: Objet) -> bool:
+        """Determine wheter the current bag contains a given object.
+
+        Args:
+            objet (Objet): Object to search in the bag.
+
+        Returns:
+            bool: True iff the bag contains the given object.
+        """
+        return objet in self.contenu;
+
+    def evaluer(self) -> float:
+        """Determine the total value of the content of the bag.
+
+        Returns:
+            float: Sum of the values of the items in the bag.
+        """
+        return sum(objet.valeur for objet in self.contenu);
 
     def masseContenu(self) -> int:
         """Total weight of the bag.

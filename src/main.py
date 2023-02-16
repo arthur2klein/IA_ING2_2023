@@ -3,6 +3,7 @@ from executions.testComplet import testComplet
 from executions.utilisationPySwarms import resolutionAvecPySwarms
 from executions.testTopologie import testTopologie
 from executions.testResol import testResol
+from lectureFichier.lecteurFichier import lire
 
 def main():
     testComplet();

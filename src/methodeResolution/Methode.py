@@ -28,6 +28,8 @@ class Methode:
         Returns:
             Statistiques: Statistics of all the results of the resolutions.
         """
+        if (nIterations <= 0):
+            raise ValueError("Number of iterations are positive.");
         res = Statistiques();
         for _ in range(nIterations):
             res.ajouter(valeur = self.resoudre().evaluer());

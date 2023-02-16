@@ -42,6 +42,17 @@ class Chemin(Solution):
             Point: Last point of the path.
         """
         return self.points[-1];
+    
+    def evaluer(self) -> float:
+        """Determine the total length of the path.
+
+        Returns:
+            float: Total length of the path.
+        """
+        return sum(
+            self.points[i].distance(other = self.points[i + 1])
+            for i in range(len(self.points) - 1)
+        ) + self.points[0].distance(other = self.points[-1]);
 
     def inverserEntre(
         self,
@@ -71,17 +82,6 @@ class Chemin(Solution):
         temp = self.points[indice1];
         self.points[indice1] = self.points[indice2];
         self.points[indice2] = temp;
-    
-    def evaluer(self) -> float:
-        """Determine the total length of the path.
-
-        Returns:
-            float: Total length of the path.
-        """
-        return sum(
-            self.points[i].distance(other = self.points[i + 1])
-            for i in range(len(self.points) - 1)
-        ) + self.points[0].distance(other = self.points[-1]);
 
     def __str__(self) -> str:
         """Create a string with all the information about the path.

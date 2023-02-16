@@ -1,3 +1,4 @@
+import sys
 from typing import Generator
 
 
@@ -11,10 +12,13 @@ def lire(path: str) -> Generator[list[str], None, None]:
         Iterator[list[Point]]: Generator iterating over the lines of the document
         and containing lists of words.
     """
-    with open(path, "r") as fichier:
-        line: str = fichier.readline();
-        while line:
-            infos: list[str] = line.split(sep = " ");
-            yield infos;
-            line = fichier.readline();
-    fichier.close();
+    try:
+        with open(path, "r") as fichier:
+            line: str = fichier.readline();
+            while line:
+                infos: list[str] = line.split(sep = " ");
+                yield infos;
+                line = fichier.readline();
+        fichier.close();
+    except EnvironmentError:
+        sys.stderr.write(f'Error while reading {path}.');

@@ -16,7 +16,6 @@ class Statistiques:
             valeur (float): Value to add to the data.
         """
         self.lValeurs += [valeur];
-        self.lValeurs.sort();
 
     def min(self) -> float:
         """Calculate the minimum of the data of the instance.
@@ -24,7 +23,7 @@ class Statistiques:
         Returns:
             float: Minimum of the data of the instance.
         """
-        return self.lValeurs[0];
+        return min(self.lValeurs);
 
     def max(self) -> float:
         """Calculate the maximum of the data of the instance.
@@ -32,7 +31,7 @@ class Statistiques:
         Returns:
             float: Maximum of the data of the instance.
         """
-        return self.lValeurs[-1];
+        return max(self.lValeurs);
 
     def percentile(self, position: float) -> float:
         """Calculate the given percentile of the data of the instance.
@@ -43,6 +42,7 @@ class Statistiques:
         Returns:
             float: Nth percentile of the data to calculate.
         """
+        self.lValeurs.sort();
         indice = position * len(self.lValeurs);
         indiceEntier = int(indice);
         indiceDecimal = indice - indiceEntier;
