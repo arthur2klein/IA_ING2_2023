@@ -126,14 +126,14 @@ class Particule:
         """Move according to its speed and considering that the particule
         stops when reaching a boundary.
         """
-        def _coefDepassement(pos: float, vit: float) -> float:
+        def _coefToBoundary(pos: float, vit: float) -> float:
             if pos + vit < self.borneInf:
                 return (self.borneInf - pos) / vit;
             if pos + vit > self.borneSup:
                 return (self.borneSup - pos) / vit;
             return 1.;
         ratio = min(
-            _coefDepassement(pos, vit)
+            _coefToBoundary(pos, vit)
             for pos, vit in zip(self.position, self.vitesse)
         );
         if ratio < 1.:
