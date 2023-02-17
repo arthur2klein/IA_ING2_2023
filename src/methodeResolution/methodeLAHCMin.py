@@ -39,7 +39,7 @@ class MethodeLAHCMin(Methode):
         valeurCandidat = candidat.evaluer();
         optimum = candidat;
         valeurMin = valeurCandidat;
-        tabMemoire = [valeurMin for i in range(self.tailleMem)];
+        tabMemoire = [valeurMin for _ in range(self.tailleMem)];
         for n in range(1, self.nIter):
             voisin = self.probleme.voisin(candidat = candidat);
             valMem = tabMemoire[n % self.tailleMem];

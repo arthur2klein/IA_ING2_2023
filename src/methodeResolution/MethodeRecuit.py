@@ -61,7 +61,7 @@ class MethodeRecuit(Methode):
                 ):
                     solution = voisin;
                     evaluation = solution.evaluer();
-                    if (delta < 0 and evaluation < minEval):
+                    if (evaluation < minEval):
                         minEval = evaluation;
                         optimum = voisin;
             temperature *= self.refroidissement;

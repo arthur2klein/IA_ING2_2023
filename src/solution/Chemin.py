@@ -65,8 +65,9 @@ class Chemin(Solution):
             indice1 (int): First index.
             indice2 (int): Second index.
         """
-        for _ in range(indice1, int((indice1 + indice2) / 2)):
-            self.inverser(indice1 = indice1, indice2 = indice2);
+        self.points[indice1 : indice2 + 1] = reversed(
+            self.points[indice1 : indice2 + 1]
+        );
 
     def inverser(
         self,

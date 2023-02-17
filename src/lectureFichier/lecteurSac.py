@@ -19,8 +19,8 @@ def lireSac(path: str) -> ProblemeSac:
     capacite = int(next(lecture)[1]);
     return ProblemeSac(
         lObjets = [
-            Objet(masse = int(infos[1]), valeur = int(infos[0]))
-            for infos in lecture
+            Objet(masse = int(masAsString), valeur = int(valAsString))
+            for valAsString, masAsString in lecture
         ],
         capacite = capacite
     );

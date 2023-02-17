@@ -39,7 +39,7 @@ class MethodeLAHCMax(Methode):
         valeurCandidat = candidat.evaluer();
         optimum = candidat;
         valeurMax = valeurCandidat;
-        tabMemoire = [valeurMax for i in range(self.tailleMem)];
+        tabMemoire = [valeurMax for _ in range(self.tailleMem)];
         for n in range(1, self.nIter):
             voisin = self.probleme.voisin(candidat = candidat);
             valMem = tabMemoire[n % self.tailleMem];

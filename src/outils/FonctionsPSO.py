@@ -45,13 +45,13 @@ class FonctionsPSO:
         Returns:
             float: Image of the given antecedent by the rosenbrock function.
         """
-        def terme(indice: int):
+        def _terme(indice: int):
             xi = position[indice];
             xip1 = position[indice + 1];
             m1 = (xip1 - xi * xi);
             m2 = xi - 1;
             return 100 * m1 * m1 + m2 * m2;
-        return sum(terme(i) for i in range(len(position) - 1));
+        return sum(_terme(i) for i in range(len(position) - 1));
 
     rosenbrock.borneInf = -2.048;
     rosenbrock.borneSup = 2.048;
@@ -61,15 +61,18 @@ class FonctionsPSO:
         f(x1, ..., xn) = ∏(cos(xi/√(i+1))) + ∑(xi²/4000)
 
         Args:
-            position (list[float]): _description_
+            position (list[float]): Antecedent.
 
         Returns:
-            float: _description_
+            float: Image of the given antecedent by the griewank funtion.
         """
-        res: float = 1.;
-        for i in range(len(position)):
-            res *= math.cos(position[i] / math.sqrt(i + 1));
-        return res + sum(x * x for x in position) /4000. + 1.;
+        return math.prod(
+            math.cos(position[i] / math.sqrt(i + 1))
+            for i in range(len(position))
+        ) + sum(
+            x * x
+            for x in position
+        ) /4000. + 1.;
 
     griewank.borneInf = -600;
     griewank.borneSup = 600;
