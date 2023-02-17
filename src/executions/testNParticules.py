@@ -37,5 +37,5 @@ def testNParticules(nTest: int, nParticules: int):
         inertie = 0.7,
         maxConfiance = 1.47
     );
-    methode = MethodePSO(probleme = probleme, nEtapes = 10_000);
+    methode = MethodePSO(probleme = probleme, nEtapes = 1_000);
     print(methode.tester(nIterations = nTest));

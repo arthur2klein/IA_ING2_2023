@@ -11,6 +11,6 @@ def main():
     # resolutionAvecPySwarms();
     # testBH(nEtapes = 10);
     # testTopologie(nPerTopology = 100, nIter = 200);
-    # testNParticules(nTest = 10, nParticules = 20);
+    # testNParticules(nTest = 100, nParticules = 20);
     
 main();
