@@ -27,6 +27,9 @@ class Essaim(Solution):
         self.fonction = fonction;
         self.estDansMemeGroupe = estDansMemeGroupe;
         self.particules = particules;
+        for particule in self.particules:
+            particule.valeur = self.fonction(particule.position);
+            particule.valeurPreferee = self.fonction(particule.position);
         
     def createSwarm(
         fonction: Callable[[list[float]], float],
@@ -97,11 +100,13 @@ class Essaim(Solution):
             particule.majVitesse(cible = self.meilleurGroupe(particule));
         for particule in self.particules:
             particule.seDeplacer();
+            particule.valeur = self.fonction(particule.position);
             if (
                 self.valeur(particule = particule) <
-                self.valeurPos(position = particule.preferee)
+                particule.valeurPreferee
             ):
                 particule.majPreferee();
+                particule.valeurPreferee = particule.valeur;
     
     def meilleurParticule(self) -> Particule:
         """Determine the best particule of the swarm.
@@ -130,12 +135,11 @@ class Essaim(Solution):
         """
         return min(
             (
-                p.preferee
-                for p in self.particules
+                p for p in self.particules
                 if self.estDansMemeGroupe(particule, p)
             ),
-            key = lambda x: self.valeurPos(position = x)
-        );
+            key = lambda x: x.valeurPreferee 
+        ).preferee;
         
     def meilleurPos(self) -> list[float]:
         """Determine the best position occupated by the swarm.
@@ -144,17 +148,6 @@ class Essaim(Solution):
             list[float]: Best position occupated by the swarm.
         """
         return self.meilleurParticule().position;
-
-    def valeurPos(self, position: list[float]) -> float:
-        """Determine the evaluation of a given position.
-
-        Args:
-            position (list[float]): Position to evaluate.
-
-        Returns:
-            float: Evaluation of the given position.
-        """
-        return self.fonction(position);
 
     def valeur(self, particule: Particule) -> float:
         """Determine the evaluation of the position of a given particule.
@@ -165,7 +158,7 @@ class Essaim(Solution):
         Returns:
             float: Evaluation of the position of the given particule.
         """
-        return self.valeurPos(position = particule.position);
+        return particule.valeur;
         
     def evaluer(self) -> float:
         """Determine the evaluation of the best position occupated by the

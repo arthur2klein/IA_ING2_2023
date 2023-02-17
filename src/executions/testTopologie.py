@@ -9,13 +9,17 @@ from probleme.ProblemeEssaim import ProblemeEssaim
 # ┌───────┬──────┬────────┬────────┬───────┬───────┬────────┬─────────┐
 # │ nIter │ roue │ 1 × 20 │ 2 × 10 │ 4 × 5 │ 5 × 4 │ cycles │ Neumann │
 # ├───────┼──────┼────────┼────────┼───────┼───────┼────────┼─────────┤
-# │    10 │ 2624 │  2296  │  2472  │  2542 │  2526 │  2593  │   2562  │
-# │    20 │ 2362 │  2026  │  2013  │  2152 │  2147 │  2185  │   2240  │
-# │    40 │ 1834 │  1504  │  1529  │  1682 │  1716 │  1831  │   1680  │
-# │    80 │ 1381 │  1151  │  1380  │  1290 │  1344 │  1463  │   1265  │
-# │   160 │ 1103 │  1266  │  1078  │   957 │  1009 │  1194  │    958  │
-# │   320 │ 1105 │  1155  │   955  │   779 │   879 │   802  │    852  │
-# │   640 │  │  1155  │   955  │   779 │   879 │   802  │    852  │
+# │    10 │ 2616 │  2322  │  2490  │  2528 │  2569 │  2570  │   2588  │
+# │    20 │ 2299 │  1874  │  1972  │  2086 │  2128 │  2224  │   2192  │
+# │    40 │ 1840 │  1537  │  1583  │  1597 │  1636 │  1826  │   1696  │
+# │    80 │ 1303 │  1358  │  1167  │  1203 │  1173 │  1505  │   1300  │
+# │   160 │ 1123 │  1206  │  1118  │   943 │   992 │  1179  │    989  │
+# │   320 │ 1013 │  1047  │  1001  │   742 │   818 │   841  │    802  │
+# │   640 │ 1110 │  1082  │   830  │   697 │   832 │   571  │    713  │
+# │  1280 │ 1119 │  1211  │   760  │   659 │   781 │   460  │    772  │
+# │  2560 │ 1100 │  1156  │   735  │   715 │   935 │   356  │    746  │
+# │  5120 │ 1086 │  1112  │   776  │   716 │   871 │   354  │    772  │
+# │ 10240 │ 1042 │  1094  │   811  │   741 │   860 │   356  │    705  │
 # └───────┴──────┴────────┴────────┴───────┴───────┴────────┴─────────┘
 ###############################################################################
 def testTopologie(nPerTopology: int, nIter: int):
@@ -39,7 +43,7 @@ def testTopologie(nPerTopology: int, nIter: int):
         maxConfiance = 1.47
     );
     methode = MethodePSO(probleme = probleme, nEtapes = nIter);
-    print(methode.tester(nIterations = nPerTopology));
+    print(methode.tester(nIterations = nPerTopology).mediane());
 
     print("Tous dans un même groupe:")
     probleme = ProblemeEssaim(
@@ -53,7 +57,7 @@ def testTopologie(nPerTopology: int, nIter: int):
         maxConfiance = 1.47
     );
     methode = MethodePSO(probleme = probleme, nEtapes = nIter);
-    print(methode.tester(nIterations = nPerTopology));
+    print(methode.tester(nIterations = nPerTopology).mediane());
 
     print("2 groupes de 10:")
     probleme = ProblemeEssaim(
@@ -67,7 +71,7 @@ def testTopologie(nPerTopology: int, nIter: int):
         maxConfiance = 1.47
     );
     methode = MethodePSO(probleme = probleme, nEtapes = nIter);
-    print(methode.tester(nIterations = nPerTopology));
+    print(methode.tester(nIterations = nPerTopology).mediane());
 
     print("4 groupes de 5:")
     probleme = ProblemeEssaim(
@@ -81,7 +85,7 @@ def testTopologie(nPerTopology: int, nIter: int):
         maxConfiance = 1.47
     );
     methode = MethodePSO(probleme = probleme, nEtapes = nIter);
-    print(methode.tester(nIterations = nPerTopology));
+    print(methode.tester(nIterations = nPerTopology).mediane());
 
     print("5 groupes de 4:")
     probleme = ProblemeEssaim(
@@ -95,7 +99,7 @@ def testTopologie(nPerTopology: int, nIter: int):
         maxConfiance = 1.47
     );
     methode = MethodePSO(probleme = probleme, nEtapes = nIter);
-    print(methode.tester(nIterations = nPerTopology));
+    print(methode.tester(nIterations = nPerTopology).mediane());
 
     print("Cycle:")
     probleme = ProblemeEssaim(
@@ -109,7 +113,7 @@ def testTopologie(nPerTopology: int, nIter: int):
         maxConfiance = 1.47
     );
     methode = MethodePSO(probleme = probleme, nEtapes = nIter);
-    print(methode.tester(nIterations = nPerTopology));
+    print(methode.tester(nIterations = nPerTopology).mediane());
 
     print("Von Neumann topology:")
     probleme = ProblemeEssaim(
@@ -123,4 +127,4 @@ def testTopologie(nPerTopology: int, nIter: int):
         maxConfiance = 1.47
     );
     methode = MethodePSO(probleme = probleme, nEtapes = nIter);
-    print(methode.tester(nIterations = nPerTopology));
+    print(methode.tester(nIterations = nPerTopology).mediane());

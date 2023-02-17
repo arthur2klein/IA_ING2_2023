@@ -158,11 +158,15 @@ class Particule:
         ];
         for i in range(len(self.position)):
             composante = self.position[i];
-            while (not(self.borneInf < composante < self.borneSup)):
+            ajustement = True;
+            while (ajustement):
+                ajustement = False;
                 if composante > self.borneSup:
+                    ajustement = True;
                     composante = 2 * self.borneSup - composante;
                     self.vitesse[i] *= -1;
                 if composante < self.borneInf:
+                    ajustement = True;
                     self.vitesse[i] *= -1;
                     composante = 2 * self.borneInf - composante;
             self.position[i] = composante;
@@ -225,7 +229,7 @@ class Particule:
             bool: True iff the particule is in the boundaries of the search
             zone.
         """
-        return all(self.bornInf < x < self.borneSup for x in self.position);
+        return all(self.borneInf < x < self.borneSup for x in self.position);
 
     def __str__(self) -> str:
         """Create a string containing the informations of the current
