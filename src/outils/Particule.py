@@ -53,10 +53,21 @@ class Particule:
         self.maxConfiance = maxConfiance;
         self.position = position;
         self.preferee = position[:];
-        self.vitesse = [0. for _ in self.position];
+        self.vitesse = [0.] * len(self.position);
         self.borneInf = borneInf;
         self.borneSup = borneSup;
         self.limVitesse = (borneSup - borneInf) * 0.5;
+        match (Particule.bhMethod):
+            case EnumBH.ARRET_FRONTIERE:
+                self._seDeplacer = self._seDeplacerArretFrontiere;
+            case EnumBH.REBOND_FRONTIERE:
+                self._seDeplacer = self._seDeplacerRebondFrontiere;
+            case EnumBH.PLUS_PROCHE_FRONTIERE:
+                self._seDeplacer = self._seDeplacerPlusProcheFrontiere;
+            case EnumBH.LIMITE_VITESSE:
+                self._seDeplacer = self._seDeplacerLimiteVitesse;
+            case EnumBH.ESPACE_PERIODIQUE:
+                self._seDeplacer = self._seDeplacerEspacePeriodique;
 
     def fromParticule(particule: Particule) -> Particule:
         """Create a new particule from a given one.
@@ -109,40 +120,58 @@ class Particule:
     def seDeplacer(self):
         """Move according to its speed and boundary handling strategy.
         """
-        match (self.bhMethod):
-            case EnumBH.ARRET_FRONTIERE:
-                hasLimitedSpeed = self.limiterAuxBornes();
-                self.position = [self.position[i] + self.vitesse[i]
-                                for i in range(len(self.position))];
-                if (hasLimitedSpeed):
-                    self.vitesse = [0 for i in range(len(self.position))];
-            case EnumBH.REBOND_FRONTIERE:
-                self.position = [self.position[i] + self.vitesse[i]
-                         for i in range(len(self.position))];
-                self.replacerPositionDansEspaceRebond();
-            case EnumBH.PLUS_PROCHE_FRONTIERE:
-                self.position = [self.position[i] + self.vitesse[i]
-                         for i in range(len(self.position))];
-                self.replacerPlusProche();
-            case EnumBH.LIMITE_VITESSE:
-                self.limiterVitesse();
-                self.position = [self.position[i] + self.vitesse[i]
-                                for i in range(len(self.position))];
-            case EnumBH.ESPACE_PERIODIQUE:
-                self.position = [self.position[i] + self.vitesse[i]
-                                for i in range(len(self.position))];
-                self.replacerPositionDansEspacePeriodique();
+        self._seDeplacer();
+
+    def _seDeplacerArretFrontiere(self):
+        """Move according to its speed and considering that the particule
+        stops when reaching a boundary.
+        """
+        hasLimitedSpeed = self._limiterAuxBornes();
+        self.position = [self.position[i] + self.vitesse[i]
+                        for i in range(len(self.position))];
+        if (hasLimitedSpeed):
+            self.vitesse = [0.] * len(self.position);
     
-    def replacerPositionDansEspaceRebond(self):
+    def _seDeplacerRebondFrontiere(self):
+        """Move according to its speed and considering that the particule
+        bounce when reaching a boundary.
+        """
+        self.position = [self.position[i] + self.vitesse[i]
+                    for i in range(len(self.position))];
+        self._replacerPositionDansEspaceRebond();
+    
+    def _seDeplacerPlusProcheFrontiere(self):
+        """Move according to its speed and considering that the particule
+        glides along the boundaries.
+        """
+        self.position = [self.position[i] + self.vitesse[i]
+                    for i in range(len(self.position))];
+        self._replacerPlusProche();
+        
+    def _seDeplacerLimiteVitesse(self):
+        """Move according to its speed and considering that the particule
+        has a speed limit.
+        """
+        self._limiterVitesse();
+        self.position = [self.position[i] + self.vitesse[i]
+                        for i in range(len(self.position))];
+
+    def _seDeplacerEspacePeriodique(self):
+        """Move according to its speed and considering that the particule
+        evolve in a periodic space.
+        """
+        self.position = [self.position[i] + self.vitesse[i]
+                        for i in range(len(self.position))];
+        self._replacerPositionDansEspacePeriodique();
+        
+        
+    def _replacerPositionDansEspaceRebond(self):
         """Keep the particule in the search space by making it bounce from the
         boundaries.
         """
         for i in range(len(self.position)):
             composante = self.position[i];
-            while (
-                composante < self.borneInf or
-                composante > self.borneSup
-            ):
+            while (not(self.borneInf < composante < self.borneSup)):
                 if composante > self.borneSup:
                     composante = 2 * self.borneSup - composante;
                     self.vitesse[i] *= -1;
@@ -151,7 +180,7 @@ class Particule:
                     composante = 2 * self.borneInf - composante;
             self.position[i] = composante;
 
-    def replacerPlusProche(self):
+    def _replacerPlusProche(self):
         """Keep the particule in the search space by bringing it to the nearest
         point of the space.
         """
@@ -163,7 +192,7 @@ class Particule:
                 self.position[i] = self.borneInf;
                 self.vitesse[i] = 0;
 
-    def limiterVitesse(self):
+    def _limiterVitesse(self):
         """Limit the speed of the particule to try to keep it in the reasearch
         space.
         """
@@ -172,7 +201,7 @@ class Particule:
             coef = self.limVitesse / n;
             self.vitesse = [v * coef for v in self.vitesse];
         
-    def replacerPositionDansEspacePeriodique(self):
+    def _replacerPositionDansEspacePeriodique(self):
         """Keep the particule in the search space by re-placing it assuming the
         space is periodic.
         """
@@ -180,24 +209,12 @@ class Particule:
         for i in range(len(self.position)):
             composante = self.position[i];
             while composante > self.borneSup:
-            ###################################################################
-            # On est en position p avec une vitesse v
-            # Si p + v > sup, on veut p + v' = sup
-            # Donc v' = sup - p
-            # On multiplie donc le vecteur vitesse par sup - p / v
-            # 
-            # On est en position pi avec une vitesse v
-            # Si p + v < inf, on veut p + v' = inf
-            # Donc v' = inf - p
-            # On multiplie donc le vecteur vitesse par inf - p / v
-            # 
-            # ################################################################# > self.borneSup:
                 composante -= largeurEspace;
             while composante < self.borneInf:
                 composante += largeurEspace;
             self.position[i] = composante;
         
-    def limiterAuxBornes(self) -> bool:
+    def _limiterAuxBornes(self) -> bool:
         """Keep the particule in the search space by ensuring that, if the
         current speed should bring it outside of the space, it stops when
         reaching the boundaries of the space instead.
@@ -251,10 +268,7 @@ class Particule:
             bool: True iff the particule is in the boundaries of the search
             zone.
         """
-        for x in self.position:
-            if x > self.borneSup or x < self.borneInf:
-                return False;
-        return True;
+        return all(self.bornInf < x < self.borneSup for x in self.position);
 
     def __str__(self) -> str:
         """Create a string containing the informations of the current
