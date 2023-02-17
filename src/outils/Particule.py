@@ -126,49 +126,36 @@ class Particule:
         """Move according to its speed and considering that the particule
         stops when reaching a boundary.
         """
-        hasLimitedSpeed = self._limiterAuxBornes();
-        self.position = [self.position[i] + self.vitesse[i]
-                        for i in range(len(self.position))];
-        if (hasLimitedSpeed):
+        def _coefDepassement(pos: float, vit: float) -> float:
+            if pos + vit < self.borneInf:
+                return (self.borneInf - pos) / vit;
+            if pos + vit > self.borneSup:
+                return (self.borneSup - pos) / vit;
+            return 1.;
+        ratio = min(
+            _coefDepassement(pos, vit)
+            for pos, vit in zip(self.position, self.vitesse)
+        );
+        if ratio < 1.:
+            self.position = [
+                pos + vit * ratio
+                for pos, vit in zip(self.position, self.vitesse)
+            ];
             self.vitesse = [0.] * len(self.position);
+        else:
+            self.position = [
+                pos + vit
+                for pos, vit in zip(self.position, self.vitesse)
+            ];
     
     def _seDeplacerRebondFrontiere(self):
         """Move according to its speed and considering that the particule
         bounce when reaching a boundary.
         """
-        self.position = [self.position[i] + self.vitesse[i]
-                    for i in range(len(self.position))];
-        self._replacerPositionDansEspaceRebond();
-    
-    def _seDeplacerPlusProcheFrontiere(self):
-        """Move according to its speed and considering that the particule
-        glides along the boundaries.
-        """
-        self.position = [self.position[i] + self.vitesse[i]
-                    for i in range(len(self.position))];
-        self._replacerPlusProche();
-        
-    def _seDeplacerLimiteVitesse(self):
-        """Move according to its speed and considering that the particule
-        has a speed limit.
-        """
-        self._limiterVitesse();
-        self.position = [self.position[i] + self.vitesse[i]
-                        for i in range(len(self.position))];
-
-    def _seDeplacerEspacePeriodique(self):
-        """Move according to its speed and considering that the particule
-        evolve in a periodic space.
-        """
-        self.position = [self.position[i] + self.vitesse[i]
-                        for i in range(len(self.position))];
-        self._replacerPositionDansEspacePeriodique();
-        
-        
-    def _replacerPositionDansEspaceRebond(self):
-        """Keep the particule in the search space by making it bounce from the
-        boundaries.
-        """
+        self.position = [
+            pos + vit
+            for pos, vit in zip(self.position, self.vitesse)
+        ];
         for i in range(len(self.position)):
             composante = self.position[i];
             while (not(self.borneInf < composante < self.borneSup)):
@@ -179,11 +166,15 @@ class Particule:
                     self.vitesse[i] *= -1;
                     composante = 2 * self.borneInf - composante;
             self.position[i] = composante;
-
-    def _replacerPlusProche(self):
-        """Keep the particule in the search space by bringing it to the nearest
-        point of the space.
+    
+    def _seDeplacerPlusProcheFrontiere(self):
+        """Move according to its speed and considering that the particule
+        glides along the boundaries.
         """
+        self.position = [
+            pos + vit
+            for pos, vit in zip(self.position, self.vitesse)
+        ];
         for i in range(len(self.position)):
             if self.position[i] > self.borneSup:
                 self.position[i] = self.borneSup;
@@ -191,20 +182,27 @@ class Particule:
             if self.position[i] < self.borneInf:
                 self.position[i] = self.borneInf;
                 self.vitesse[i] = 0;
-
-    def _limiterVitesse(self):
-        """Limit the speed of the particule to try to keep it in the reasearch
-        space.
+        
+    def _seDeplacerLimiteVitesse(self):
+        """Move according to its speed and considering that the particule
+        has a speed limit.
         """
-        n = norme(liste = self.vitesse);
-        if (n > self.limVitesse):
+        if ((n := norme(liste = self.vitesse)) > self.limVitesse):
             coef = self.limVitesse / n;
             self.vitesse = [v * coef for v in self.vitesse];
-        
-    def _replacerPositionDansEspacePeriodique(self):
-        """Keep the particule in the search space by re-placing it assuming the
-        space is periodic.
+        self.position = [
+            pos + vit
+            for pos, vit in zip(self.position, self.vitesse)
+        ];
+
+    def _seDeplacerEspacePeriodique(self):
+        """Move according to its speed and considering that the particule
+        evolve in a periodic space.
         """
+        self.position = [
+            pos + vit
+            for pos, vit in zip(self.position, self.vitesse)
+        ];
         largeurEspace = self.borneSup - self.borneInf;
         for i in range(len(self.position)):
             composante = self.position[i];
@@ -213,47 +211,6 @@ class Particule:
             while composante < self.borneInf:
                 composante += largeurEspace;
             self.position[i] = composante;
-        
-    def _limiterAuxBornes(self) -> bool:
-        """Keep the particule in the search space by ensuring that, if the
-        current speed should bring it outside of the space, it stops when
-        reaching the boundaries of the space instead.
-
-        Returns:
-            bool: True iff the particule had to be stopped.
-        """
-        res = False;
-        for i in range(len(self.vitesse)):
-            ###################################################################
-            # On est en position p avec une vitesse v
-            # Si p + v > sup, on veut p + v' = sup
-            # Donc v' = sup - p
-            # On multiplie donc le vecteur vitesse par sup - p / v
-            # 
-            # On est en position pi avec une vitesse v
-            # Si p + v < inf, on veut p + v' = inf
-            # Donc v' = inf - p
-            # On multiplie donc le vecteur vitesse par inf - p / v
-            # 
-            # #################################################################
-            if (self.vitesse[i] == 0):
-                continue;
-            positionPrevue = self.vitesse[i] + self.position[i];
-            if positionPrevue > self.borneSup:
-                res = True;
-                ratio = (self.borneSup - self.position[i]) / self.vitesse[i];
-                self.vitesse = [
-                    composante * ratio
-                    for composante in self.vitesse
-                ];
-            if positionPrevue < self.borneInf:
-                res = True;
-                ratio = (self.borneInf - self.position[i]) / self.vitesse[i];
-                self.vitesse = [
-                    composante * ratio
-                    for composante in self.vitesse
-                ];
-        return res;
 
     def majPreferee(self):
         """Update the best position known by the particule to match the current

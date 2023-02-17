@@ -38,7 +38,7 @@ class MethodePSO(Methode):
         essaim = None;
         return min(
             (
-                self.probleme.voisin(candidat = essaim)
+                essaim := self.probleme.voisin(candidat = essaim)
                 for _ in range(self.nEtapes + 1)
             ),
             key = lambda x: x.evaluer()

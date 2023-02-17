@@ -8,7 +8,11 @@ def main():
     # testComplet();
     # testResol();
     # resolutionAvecPySwarms();
-    testBH(nEtapes = 100);
-    testTopologie(nPerTopology = 100, nIter = 100);
+    # testBH(nEtapes = 10);
+    n = 10;
+    for _ in range(5):
+        print(f'{n = }')
+        testTopologie(nPerTopology = 100, nIter = n);
+        n *= 2;
     
 main();

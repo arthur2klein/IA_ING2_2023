@@ -33,7 +33,8 @@ class Topologie:
         Returns:
             bool: True iff the particules follow each other in the cycle.
         """
-        return (particule1.id + 1) % nParticules == particule2.id or\
+        return particule1.id == particule2.id or\
+               (particule1.id + 1) % nParticules == particule2.id or\
                (particule2.id + 1) % nParticules == particule1.id;
 
     def cycle(
@@ -88,8 +89,9 @@ class Topologie:
         id1overn = particule1.id // taille;
         id2modn = particule2.id % taille;
         id2overn = particule2.id // taille;
-        return id1overn == id2overn or\
-            (id1modn == id2overn and id1overn == id2modn);
+        return particule2.id == particule1.id or\
+               id1overn == id2overn or\
+               (id1modn == id2overn and id1overn == id2modn);
 
     def clustersDeTaille(taille: int) -> Callable[[Particule, Particule], bool]:
         """Create a function assuming that they are n particules per group.
