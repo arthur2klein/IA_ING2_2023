@@ -119,7 +119,7 @@ def testComplet():
         borneInf = FonctionsPSO.schwefel.borneInf,
         borneSup = FonctionsPSO.schwefel.borneSup,
         estDansMemeGroupe = Topologie.tousMemeGroupe,
-        tailleEssaim = 20,
+        tailleEssaim = 30,
         inertie = 0.7,
         maxConfiance = 1.47
     );

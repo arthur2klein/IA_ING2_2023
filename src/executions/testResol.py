@@ -77,7 +77,7 @@ def testResol():
         nDimensions = 10,
         borneInf = FonctionsPSO.sphere.borneInf,
         borneSup = FonctionsPSO.sphere.borneSup,
-        estDansMemeGroupe = Topologie.tousMemeGroupe,
+        estDansMemeGroupe = Topologie.roue,
         tailleEssaim = 15,
         inertie = 0.7,
         maxConfiance = 1.47
@@ -90,7 +90,7 @@ def testResol():
         nDimensions = 5,
         borneInf = FonctionsPSO.griewank.borneInf,
         borneSup = FonctionsPSO.griewank.borneSup,
-        estDansMemeGroupe = Topologie.clustersDeTaille(4),
+        estDansMemeGroupe = Topologie.clustersDeTaille(taille = 5),
         tailleEssaim = 15,
         inertie = 0.7,
         maxConfiance = 1.47
@@ -103,7 +103,7 @@ def testResol():
         nDimensions = 5,
         borneInf = FonctionsPSO.rosenbrock.borneInf,
         borneSup = FonctionsPSO.rosenbrock.borneSup,
-        estDansMemeGroupe = Topologie.clustersDeTaille(5),
+        estDansMemeGroupe = Topologie.vonNeumann(largeur = 5, longueur = 3),
         tailleEssaim = 15,
         inertie = 0.7,
         maxConfiance = 1.47
@@ -113,14 +113,14 @@ def testResol():
     print("Probleme Schwefel:")
     probleme = ProblemeEssaim(
         fonction = FonctionsPSO.schwefel,
-        nDimensions = 2,
+        nDimensions = 5,
         borneInf = FonctionsPSO.schwefel.borneInf,
         borneSup = FonctionsPSO.schwefel.borneSup,
-        estDansMemeGroupe = Topologie.tousMemeGroupe,
-        tailleEssaim = 20,
+        estDansMemeGroupe = Topologie.cycle(nParticules = 60),
+        tailleEssaim = 60,
         inertie = 0.7,
         maxConfiance = 1.47
     );
-    methode = MethodePSO(probleme = probleme, nEtapes = 2000);
+    methode = MethodePSO(probleme = probleme, nEtapes = 5000);
     print(methode.resoudre());
     print("\n----------\n");

@@ -32,6 +32,6 @@ class Methode:
             raise ValueError("Number of iterations are positive.");
         res = Statistiques();
         for i in range(nIterations):
-            print (f'{i / nIterations * 100.:0.2f}%', end="\r");
+            print (f'{i / nIterations * 100.:05.2f}%', end="\r");
             res.ajouter(valeur = self.resoudre().evaluer());
         return res;

@@ -29,7 +29,7 @@ class Essaim(Solution):
         self.particules = particules;
         for particule in self.particules:
             particule.valeur = self.fonction(particule.position);
-            particule.valeurPreferee = self.fonction(particule.position);
+            particule.valeurPreferee = particule.valeur;
         
     def createSwarm(
         fonction: Callable[[list[float]], float],

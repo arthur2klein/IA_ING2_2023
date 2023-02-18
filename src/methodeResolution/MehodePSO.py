@@ -37,5 +37,5 @@ class MethodePSO(Methode):
         """
         essaim = self.probleme.candidat();
         for _ in range(self.nEtapes):
-            essaim = self.probleme.voisin(candidat = essaim);
+            essaim.etape();
         return essaim;

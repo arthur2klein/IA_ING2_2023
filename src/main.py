@@ -7,10 +7,10 @@ from executions.testNParticules import testNParticules
 
 def main():
     testComplet();
-    # testResol();
-    # resolutionAvecPySwarms();
-    # testBH(nEtapes = 10);
-    # testTopologie(nPerTopology = 100, nIter = 200);
-    # testNParticules(nTest = 100, nParticules = 20);
+    testResol();
+    resolutionAvecPySwarms();
+    testBH(nEtapes = 10);
+    testTopologie(nPerTopology = 10, nRepeat = 4);
+    testNParticules(nTest = 100, nParticules = 20);
     
 main();
