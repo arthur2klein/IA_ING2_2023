@@ -21,9 +21,10 @@ class EnumBH:
     ESPACE_PERIODIQUE = auto();    
 
 class Particule:
-    bhMethod: EnumBH = EnumBH.REBOND_FRONTIERE;
     """A particule of the PSO method.
     """
+    bhMethod: EnumBH = EnumBH.REBOND_FRONTIERE;
+
     def __init__(
         self,
         id: int,
@@ -31,7 +32,8 @@ class Particule:
         maxConfiance: float,
         position: list[float],
         borneInf: float,
-        borneSup: float
+        borneSup: float,
+        fonction: callable[[list[float]], float]
     ):
         """Create a new particule with the given caracteristics.
 
@@ -47,6 +49,7 @@ class Particule:
             should explorate.
             borneSup (float): Upper bound of the space that the particule
             should explorate.
+            fonction (callable[[list[float]], float]): Fonction to optimize.
         """
         self.id = id;
         self.inertie = inertie;
@@ -56,6 +59,10 @@ class Particule:
         self.vitesse = [0.] * len(self.position);
         self.borneInf = borneInf;
         self.borneSup = borneSup;
+        self.fonction = fonction;
+        self.valeur = fonction(self.position);
+        self.valeurPreferee = self.valeur;
+        self.groupe = [];
         self.limVitesse = (borneSup - borneInf) * 0.5;
         match (Particule.bhMethod):
             case EnumBH.ARRET_FRONTIERE:
@@ -84,7 +91,8 @@ class Particule:
             maxConfiance = particule.maxConfiance,
             position = particule.position[:],
             borneInf = particule.borneInf,
-            borneSup = particule.borneSup
+            borneSup = particule.borneSup,
+            fonction = particule.fonction
         );
 
     def majVitesse(self, cible: list[float]):
@@ -111,25 +119,44 @@ class Particule:
         confiancePreferee = random.random() * self.maxConfiance;
         confianceCible = random.random() * self.maxConfiance;
         self.vitesse = [
-            self.inertie * self.vitesse[i] +
-            confianceCible * (cible[i] - self.position[i]) +
-            confiancePreferee * (self.preferee[i] - self.position[i])
-            for i in range(len(self.vitesse))
+            self.inertie * vitessePrecedente +
+            confianceCible * (direction - position) +
+            confiancePreferee * (preferee - position)
+            for position, vitessePrecedente, preferee, direction
+            in zip(
+                self.position,
+                self.vitesse,
+                self.preferee,
+                cible
+            )
         ];
 
     def seDeplacer(self):
         """Move according to its speed and boundary handling strategy.
         """
         self._seDeplacer();
+        self.valeur = self.fonction(self.position);
 
     def _seDeplacerArretFrontiere(self):
         """Move according to its speed and considering that the particule
         stops when reaching a boundary.
         """
         def _coefToBoundary(pos: float, vit: float) -> float:
-            if pos + vit < self.borneInf:
+            """Returns the ratio of the given speed necessary for the
+            particule not to go out of the boundary.
+
+            Args:
+                pos (float): Component of the position.
+                vit (float): Component of the speed.
+
+            Returns:
+                float: Ratio nessary for particule not to go out of the
+                boundary.
+            """
+            nextPos = pos + vit;
+            if nextPos < self.borneInf:
                 return (self.borneInf - pos) / vit;
-            if pos + vit > self.borneSup:
+            if nextPos > self.borneSup:
                 return (self.borneSup - pos) / vit;
             return 1.;
         ratio = min(
@@ -157,19 +184,15 @@ class Particule:
             for pos, vit in zip(self.position, self.vitesse)
         ];
         for i in range(len(self.position)):
-            composante = self.position[i];
-            ajustement = True;
-            while (ajustement):
-                ajustement = False;
-                if composante > self.borneSup:
-                    ajustement = True;
-                    composante = 2 * self.borneSup - composante;
+            while (True):
+                if self.position[i] > self.borneSup:
+                    self.position[i] = 2 * self.borneSup - self.position[i];
                     self.vitesse[i] *= -1;
-                if composante < self.borneInf:
-                    ajustement = True;
+                elif self.position[i] < self.borneInf:
                     self.vitesse[i] *= -1;
-                    composante = 2 * self.borneInf - composante;
-            self.position[i] = composante;
+                    self.position[i] = 2 * self.borneInf - self.position[i];
+                else:
+                    break;
     
     def _seDeplacerPlusProcheFrontiere(self):
         """Move according to its speed and considering that the particule
@@ -203,24 +226,18 @@ class Particule:
         """Move according to its speed and considering that the particule
         evolve in a periodic space.
         """
+        largeurEspace = self.borneSup - self.borneInf;
         self.position = [
-            pos + vit
+            (pos + vit - self.borneInf) % largeurEspace + self.borneInf
             for pos, vit in zip(self.position, self.vitesse)
         ];
-        largeurEspace = self.borneSup - self.borneInf;
-        for i in range(len(self.position)):
-            composante = self.position[i];
-            while composante > self.borneSup:
-                composante -= largeurEspace;
-            while composante < self.borneInf:
-                composante += largeurEspace;
-            self.position[i] = composante;
 
     def majPreferee(self):
         """Update the best position known by the particule to match the current
         position of the particule.
         """
         self.preferee = self.position[:];
+        self.valeurPreferee = self.valeur;
 
     def estDansBorne(self) -> bool:
         """Verify if the particule is in the boundaries of the search zone.
@@ -230,6 +247,14 @@ class Particule:
             zone.
         """
         return all(self.borneInf < x < self.borneSup for x in self.position);
+
+    def ajouterGroupe(self, particule: Particule):
+        """Adds a particule to the group of the current particule.
+
+        Args:
+            particule (Particule): Particule to add to the group.
+        """
+        self.groupe += [particule];
 
     def __str__(self) -> str:
         """Create a string containing the informations of the current

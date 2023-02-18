@@ -25,11 +25,8 @@ class Essaim(Solution):
             particules (list[Particule]): Particules of the swarm.
         """
         self.fonction = fonction;
-        self.estDansMemeGroupe = estDansMemeGroupe;
         self.particules = particules;
-        for particule in self.particules:
-            particule.valeur = self.fonction(particule.position);
-            particule.valeurPreferee = particule.valeur;
+        self.initialiserGroupe(estDansMemeGroupe);
         
     def createSwarm(
         fonction: Callable[[list[float]], float],
@@ -73,7 +70,8 @@ class Essaim(Solution):
                     for _ in range(nDimensions)
                 ],
                 borneInf = borneInf,
-                borneSup = borneSup
+                borneSup = borneSup,
+                fonction = fonction
             ) for i in range(taille)]
         );
 
@@ -89,9 +87,26 @@ class Essaim(Solution):
         return Essaim(
             fonction = essaim.fonction,
             estDansMemeGroupe = essaim.estDansMemeGroupe,
-            particules = [Particule.fromParticule(particule = x)
-                          for x in essaim.particules]
+            particules = [
+                Particule.fromParticule(particule = x)
+                for x in essaim.particules
+            ]
         );
+
+    def initialiserGroupe(
+        self,
+        topologie: callable[[Particule, Particule], bool]
+    ):
+        """Create the groups of the particules of the current swarm.
+
+        Args:
+            topologie (callable[[Particule, Particule], bool]): Function
+            returning true iff the two given particules are in a same group.
+        """
+        for p in self.particules:
+            for other in self.particules:
+                if topologie(p, other):
+                    p.ajouterGroupe(other);
 
     def etape(self):
         """Do a step of speed update and movement.
@@ -100,13 +115,11 @@ class Essaim(Solution):
             particule.majVitesse(cible = self.meilleurGroupe(particule));
         for particule in self.particules:
             particule.seDeplacer();
-            particule.valeur = self.fonction(particule.position);
             if (
-                self.valeur(particule = particule) <
+                particule.valeur <
                 particule.valeurPreferee
             ):
                 particule.majPreferee();
-                particule.valeurPreferee = particule.valeur;
     
     def meilleurParticule(self) -> Particule:
         """Determine the best particule of the swarm.
@@ -119,7 +132,7 @@ class Essaim(Solution):
                 particule
                 for particule in self.particules
             ),
-            key = lambda x: self.valeur(x)
+            key = lambda x: x.valeur
         );
 
     def meilleurGroupe(self, particule: Particule) -> list[float]:
@@ -134,10 +147,7 @@ class Essaim(Solution):
             list[float]: Best position of the group.
         """
         return min(
-            (
-                p for p in self.particules
-                if self.estDansMemeGroupe(particule, p)
-            ),
+            particule.groupe,
             key = lambda x: x.valeurPreferee 
         ).preferee;
         
@@ -149,17 +159,6 @@ class Essaim(Solution):
         """
         return self.meilleurParticule().position;
 
-    def valeur(self, particule: Particule) -> float:
-        """Determine the evaluation of the position of a given particule.
-
-        Args:
-            particule (Particule): Particule whose position will be evaluated.
-
-        Returns:
-            float: Evaluation of the position of the given particule.
-        """
-        return particule.valeur;
-        
     def evaluer(self) -> float:
         """Determine the evaluation of the best position occupated by the
         swarm.
@@ -168,7 +167,7 @@ class Essaim(Solution):
             float: Evaluation of the best position occupated by the swarm.
         """
         return min(
-            self.valeur(particule)
+            particule.valeur
             for particule in self.particules
         );
 

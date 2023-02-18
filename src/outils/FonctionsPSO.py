@@ -67,8 +67,8 @@ class FonctionsPSO:
             float: Image of the given antecedent by the griewank funtion.
         """
         return math.prod(
-            math.cos(position[i] / math.sqrt(i + 1))
-            for i in range(len(position))
+            math.cos(x / math.sqrt(i + 1))
+            for i, x in enumerate(position)
         ) + sum(
             x * x
             for x in position
