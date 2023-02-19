@@ -10,6 +10,16 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "Test of performance",
+            "type": "shell",
+            "command": "pipenv run python -m cProfile -s tottime src/main.py > ~/performances`date +%Y%m%d-%H%M`",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }
