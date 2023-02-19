@@ -13,9 +13,9 @@ def main():
     testTopologie(nPerTopology = 10, nRepeat = 5);
     testNParticules(
         nTest = 10,
-        nParticulesMax = 1000,
-        tempsParResolution = 1,
-        nLignes = 15
+        nParticulesMax = 100,
+        tempsParResolution = 0.3,
+        nLignes = 5
     );
     
 main();
