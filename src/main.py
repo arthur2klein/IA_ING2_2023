@@ -10,7 +10,12 @@ def main():
     testResol();
     resolutionAvecPySwarms();
     testBH(nEtapes = 10);
-    testTopologie(nPerTopology = 10, nRepeat = 4);
-    testNParticules(nTest = 100, nParticules = 20);
+    testTopologie(nPerTopology = 10, nRepeat = 5);
+    testNParticules(
+        nTest = 10,
+        nParticulesMax = 1000,
+        tempsParResolution = 1,
+        nLignes = 15
+    );
     
 main();
