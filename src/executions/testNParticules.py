@@ -5,6 +5,7 @@ from probleme.ProblemeEssaim import ProblemeEssaim
 
 
 ###############################################################################
+# Pour schwefel avec 10 dimension.
 # Pour 10 tests, 1000 particules max, 1 seconde par résolution et 15 lignes:
 # ┌─────────────┬───────────────┐
 # │ nParticules │    Mediane    │
@@ -48,10 +49,10 @@ def testNParticules(
     for i in range(1, nLignes + 1):
         nParticule = round(nParticulesMax ** (i / nLignes));
         probleme = ProblemeEssaim(
-            fonction = FonctionsPSO.schwefel,
-            nDimensions = 10,
-            borneInf = FonctionsPSO.schwefel.borneInf,
-            borneSup = FonctionsPSO.schwefel.borneSup,
+            fonction = FonctionsPSO.griewank,
+            nDimensions = 5,
+            borneInf = FonctionsPSO.griewank.borneInf,
+            borneSup = FonctionsPSO.griewank.borneSup,
             estDansMemeGroupe = Topologie.vonNeumann,
             tailleEssaim = nParticule,
             inertie = 0.7,

@@ -77,7 +77,7 @@ def testResol():
         nDimensions = 10,
         borneInf = FonctionsPSO.sphere.borneInf,
         borneSup = FonctionsPSO.sphere.borneSup,
-        estDansMemeGroupe = Topologie.roue,
+        estDansMemeGroupe = Topologie.etoile,
         tailleEssaim = 15,
         inertie = 0.7,
         maxConfiance = 1.47

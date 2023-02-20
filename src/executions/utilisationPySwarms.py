@@ -31,7 +31,7 @@ def resolutionAvecPySwarms():
         nDimensions = 10,
         borneInf = FonctionsPSO.rosenbrock.borneInf,
         borneSup = FonctionsPSO.rosenbrock.borneSup,
-        estDansMemeGroupe = Topologie.roue,
+        estDansMemeGroupe = Topologie.etoile,
         tailleEssaim = 10,
         inertie = 0.7,
         maxConfiance = 1.47

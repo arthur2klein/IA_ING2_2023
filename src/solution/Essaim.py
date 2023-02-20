@@ -61,18 +61,21 @@ class Essaim(Solution):
         return Essaim(
             fonction = fonction,
             estDansMemeGroupe = estDansMemeGroupe,
-            particules = [Particule(
-                id = i,
-                inertie = inertie,
-                maxConfiance = maxConfiance,
-                position = [
-                    random.random() * (borneSup - borneInf) + borneInf
-                    for _ in range(nDimensions)
-                ],
-                borneInf = borneInf,
-                borneSup = borneSup,
-                fonction = fonction
-            ) for i in range(taille)]
+            particules = [
+                Particule(
+                    id = i,
+                    inertie = inertie,
+                    maxConfiance = maxConfiance,
+                    position = [
+                        random.uniform(borneInf, borneSup)
+                        for _ in range(nDimensions)
+                    ],
+                    borneInf = borneInf,
+                    borneSup = borneSup,
+                    fonction = fonction
+                )
+                for i in range(taille)
+            ]
         );
 
     def fromEssaim(essaim: Essaim) -> Essaim:
