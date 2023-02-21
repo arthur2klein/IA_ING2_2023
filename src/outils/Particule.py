@@ -119,8 +119,8 @@ class Particule:
         confiancePreferee = random.random() * self.maxConfiance;
         confianceCible = random.random() * self.maxConfiance;
         self.vitesse = [
-            self.inertie * vitessePrecedente +
-            confianceCible * (direction - position) +
+            self.inertie * vitessePrecedente +\
+            confianceCible * (direction - position) +\
             confiancePreferee * (preferee - position)
             for position, vitessePrecedente, preferee, direction
             in zip(

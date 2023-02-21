@@ -28,7 +28,7 @@ class FonctionsPSO:
             float: Image of the given antecedent by the schwefel function.
         """
         return 418.9829 * len(position) - sum(
-            x * math.sin(math.sqrt(math.fabs(x)))
+            x * math.sin(math.sqrt(abs(x)))
             for x in position
         );
 

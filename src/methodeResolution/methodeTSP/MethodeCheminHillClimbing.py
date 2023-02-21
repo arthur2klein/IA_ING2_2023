@@ -52,7 +52,7 @@ class MethodeCheminHillClimbing(Methode):
         """
         res = Chemin([]);
         restants = self.lPoints[:];
-        indice = random.randint(a = 0, b = len(restants) - 1);
+        indice = random.randint(0, len(restants) - 1);
         pointChoisi = restants[indice];
         res.addPoint(point = pointChoisi);
         restants.pop(indice);
