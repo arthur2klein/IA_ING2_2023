@@ -25,6 +25,9 @@ class Methode:
             nIterations (int): Number of times that the problem should be
             solved.
 
+        Raises:
+            ValueError: nIterations should be positive.
+
         Returns:
             Statistiques: Statistics of all the results of the resolutions.
         """
